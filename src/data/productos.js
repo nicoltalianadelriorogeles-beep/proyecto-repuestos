@@ -60,7 +60,7 @@ const productos = [
     categoria: "Aspiradoras",
     nombre: "Manguera flexible",
     descripcion:
-      "Manguera flexible de repuesto para aspiradoras domésticas.",
+      "Manguera flexible de repuesto para aspiradoras.",
     precio: "42.000",
     estado: "POPULAR"
   },
@@ -71,7 +71,7 @@ const productos = [
     categoria: "Aspiradoras",
     nombre: "Cepillo universal",
     descripcion:
-      "Cepillo universal para limpieza de diferentes superficies.",
+      "Cepillo universal para diferentes superficies.",
     precio: "32.000",
     estado: ""
   },

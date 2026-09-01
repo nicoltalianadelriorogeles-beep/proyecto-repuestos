@@ -1,10 +1,29 @@
+/* =========================================================
+   INDEX.CSS
+   Producciones Angel
+========================================================= */
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+
+  background: #f7f9fc;
+
+  color: #344054;
+
+  font-family:
+    "Segoe UI",
+    Roboto,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -12,6 +31,21 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }

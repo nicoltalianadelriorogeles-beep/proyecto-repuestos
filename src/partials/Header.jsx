@@ -1,4 +1,3 @@
-
 function Header({
   busqueda,
   setBusqueda,
@@ -47,7 +46,11 @@ function Header({
               className="d-flex align-items-center"
               role="button"
               onClick={() =>
-                cambiarPagina("home")
+                cambiarPagina(
+                  usuarioActual?.rol === "CLIENTE"
+                    ? "cliente"
+                    : "home"
+                )
               }
             >
 
@@ -92,7 +95,10 @@ function Header({
                 }
               />
 
-              <button className="btn btn-warning">
+              <button
+                type="button"
+                className="btn btn-warning"
+              >
 
                 <i className="fa-solid fa-magnifying-glass"></i>
 
@@ -111,6 +117,7 @@ function Header({
                 <>
 
                   <button
+                    type="button"
                     className="btn btn-outline-primary"
                     onClick={() =>
                       cambiarPagina("login")
@@ -125,6 +132,7 @@ function Header({
 
 
                   <button
+                    type="button"
                     className="btn btn-warning"
                     onClick={() =>
                       cambiarPagina("registro")
@@ -144,14 +152,14 @@ function Header({
                 <div className="dropdown">
 
                   <button
+                    type="button"
                     className="btn btn-outline-primary dropdown-toggle"
                     data-bs-toggle="dropdown"
                   >
 
                     <i className="fa-solid fa-user me-2"></i>
 
-                    {usuarioActual.primerNombre ||
-                      usuarioActual.nombre}
+                    {usuarioActual.primerNombre}
 
                   </button>
 
@@ -159,18 +167,42 @@ function Header({
                   <ul className="dropdown-menu dropdown-menu-end">
 
 
+                    {usuarioActual.rol === "CLIENTE" && (
+
+                      <li>
+
+                        <button
+                          type="button"
+                          className="dropdown-item"
+                          onClick={() =>
+                            cambiarPagina("cliente")
+                          }
+                        >
+
+                          <i className="fa-solid fa-house-user me-2"></i>
+
+                          Mi espacio
+
+                        </button>
+
+                      </li>
+
+                    )}
+
+
                     {usuarioActual.rol === "ADMIN" && (
 
                       <li>
 
                         <button
+                          type="button"
                           className="dropdown-item"
                           onClick={() =>
                             cambiarPagina("admin")
                           }
                         >
 
-                          <i className="fa-solid fa-gear me-2"></i>
+                          <i className="fa-solid fa-user-shield me-2"></i>
 
                           Administración
 
@@ -184,6 +216,7 @@ function Header({
                     <li>
 
                       <button
+                        type="button"
                         className="dropdown-item text-danger"
                         onClick={cerrarSesion}
                       >
@@ -206,12 +239,13 @@ function Header({
               {/* CARRITO */}
 
               <button
-                className="btn btn-primary position-relative"
+                type="button"
+                className="btn btn-primary position-relative cart-button"
                 onClick={abrirCarrito}
+                title="Ver carrito"
               >
 
                 <i className="fa-solid fa-cart-shopping"></i>
-
 
                 {cantidadCarrito > 0 && (
 
@@ -234,13 +268,16 @@ function Header({
       </header>
 
 
-      {/* NAVBAR */}
+      {/* NAVEGACIÓN */}
 
       <nav className="navbar bg-primary navbar-dark">
 
         <div className="container d-flex align-items-center">
 
-          <button className="btn btn-warning fw-bold">
+          <button
+            type="button"
+            className="btn btn-warning fw-bold"
+          >
 
             <i className="fa-solid fa-bars me-2"></i>
 
@@ -252,9 +289,14 @@ function Header({
           <div className="d-flex gap-4 ms-4">
 
             <button
+              type="button"
               className="nav-link text-white bg-transparent border-0"
               onClick={() =>
-                cambiarPagina("home")
+                cambiarPagina(
+                  usuarioActual?.rol === "CLIENTE"
+                    ? "cliente"
+                    : "home"
+                )
               }
             >
               Inicio
@@ -262,7 +304,7 @@ function Header({
 
 
             <a
-              href="#productos"
+              href="#catalogo-cliente"
               className="nav-link text-white"
             >
               Repuestos
@@ -278,19 +320,23 @@ function Header({
 
 
             <a
-              href="#nosotros"
+              href="#perfil-cliente"
               className="nav-link text-white"
             >
-              Nosotros
+              Mi perfil
             </a>
 
 
-            <a
-              href="#contacto"
-              className="nav-link text-white"
-            >
-              Contacto
-            </a>
+            {!usuarioActual && (
+
+              <a
+                href="#nosotros"
+                className="nav-link text-white"
+              >
+                Nosotros
+              </a>
+
+            )}
 
           </div>
 

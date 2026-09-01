@@ -13,15 +13,18 @@ function Admin({
   eliminarUsuario
 }) {
 
+  const formularioInicial = {
+    nombre: "",
+    categoria: "Lavadoras",
+    descripcion: "",
+    precio: "",
+    icon: "fa-gears",
+    estado: ""
+  };
+
+
   const [formulario, setFormulario] =
-    useState({
-      nombre: "",
-      categoria: "Lavadoras",
-      descripcion: "",
-      precio: "",
-      icon: "fa-gears",
-      estado: ""
-    });
+    useState(formularioInicial);
 
 
   const [editando, setEditando] =
@@ -32,7 +35,8 @@ function Admin({
 
     setFormulario({
       ...formulario,
-      [e.target.name]: e.target.value
+      [e.target.name]:
+        e.target.value
     });
 
   };
@@ -40,14 +44,9 @@ function Admin({
 
   const limpiarFormulario = () => {
 
-    setFormulario({
-      nombre: "",
-      categoria: "Lavadoras",
-      descripcion: "",
-      precio: "",
-      icon: "fa-gears",
-      estado: ""
-    });
+    setFormulario(
+      formularioInicial
+    );
 
     setEditando(null);
 
@@ -66,17 +65,59 @@ function Admin({
     ) {
 
       alert(
-        "Completa nombre, descripción y precio."
+        "Completa todos los campos."
       );
 
       return;
+
     }
 
 
-    if (editando) {
+    const precio = Number(
+      formulario.precio
+        .replace(/\./g, "")
+        .replace(/[^\d]/g, "")
+    );
+
+
+    if (!precio) {
+
+      alert(
+        "Ingresa un precio válido."
+      );
+
+      return;
+
+    }
+
+
+    const productoFinal = {
+
+      nombre:
+        formulario.nombre.trim(),
+
+      categoria:
+        formulario.categoria,
+
+      descripcion:
+        formulario.descripcion.trim(),
+
+      precio:
+        precio.toLocaleString("es-CO"),
+
+      icon:
+        formulario.icon,
+
+      estado:
+        formulario.estado
+
+    };
+
+
+    if (editando !== null) {
 
       editarProducto({
-        ...formulario,
+        ...productoFinal,
         id: editando
       });
 
@@ -87,12 +128,12 @@ function Admin({
     } else {
 
       agregarProducto({
-        ...formulario,
+        ...productoFinal,
         id: Date.now()
       });
 
       alert(
-        "Repuesto agregado correctamente."
+        "Repuesto creado correctamente."
       );
 
     }
@@ -103,19 +144,40 @@ function Admin({
   };
 
 
-  const cargarProducto = (producto) => {
+  const cargarProducto = (
+    producto
+  ) => {
 
     setFormulario({
-      nombre: producto.nombre,
-      categoria: producto.categoria,
-      descripcion: producto.descripcion,
-      precio: producto.precio,
-      icon: producto.icon,
-      estado: producto.estado || ""
+
+      nombre:
+        producto.nombre || "",
+
+      categoria:
+        producto.categoria ||
+        "Lavadoras",
+
+      descripcion:
+        producto.descripcion || "",
+
+      precio:
+        String(
+          producto.precio || ""
+        ).replace(/\./g, ""),
+
+      icon:
+        producto.icon ||
+        "fa-gears",
+
+      estado:
+        producto.estado || ""
+
     });
 
 
-    setEditando(producto.id);
+    setEditando(
+      producto.id
+    );
 
 
     window.scrollTo({
@@ -128,14 +190,19 @@ function Admin({
 
   const eliminar = (id) => {
 
-    const confirmar = window.confirm(
-      "¿Seguro que deseas eliminar este repuesto?"
-    );
+    const confirmar =
+      window.confirm(
+        "¿Seguro que deseas eliminar este repuesto?"
+      );
 
 
     if (confirmar) {
 
       eliminarProducto(id);
+
+      alert(
+        "Repuesto eliminado correctamente."
+      );
 
     }
 
@@ -143,37 +210,59 @@ function Admin({
 
 
   return (
-    <main className="bg-light py-5">
+    <main className="admin-page py-5">
 
       <div className="container">
 
-        {/* ENCABEZADO */}
 
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        {/* CABECERA */}
+
+        <div className="admin-header mb-5">
 
           <div>
 
-            <span className="text-warning fw-bold">
+            <span className="admin-label">
               PANEL ADMINISTRATIVO
             </span>
 
-            <h1 className="fw-bold text-primary">
+
+            <h1 className="admin-title">
               Administración
             </h1>
 
-            <p className="text-secondary mb-0">
-              Gestiona los repuestos y usuarios de Producciones Angel.
+
+            <p className="admin-description">
+
+              Gestiona los repuestos y usuarios
+              de Producciones Angel.
+
             </p>
 
           </div>
 
 
-          <div className="bg-primary text-white rounded-3 p-3 text-center">
+          <div className="admin-account-card">
 
-            <i className="fa-solid fa-user-shield fa-2x"></i>
+            <div className="admin-account-icon">
 
-            <div className="fw-bold mt-1">
-              ADMIN
+              <i className="fa-solid fa-user-shield"></i>
+
+            </div>
+
+
+            <div>
+
+              <small>
+                Sesión iniciada
+              </small>
+
+
+              <strong>
+
+                {usuarioActual?.primerNombre}
+
+              </strong>
+
             </div>
 
           </div>
@@ -181,76 +270,215 @@ function Admin({
         </div>
 
 
-        {/* CRUD REPUESTOS */}
+        {/* RESUMEN */}
 
-        <div className="card border-0 shadow-sm mb-5">
+        <div className="row g-4 mb-5">
 
-          <div className="card-header bg-primary text-white">
 
-            <h5 className="mb-0 py-2">
+          <div className="col-md-4">
 
-              <i
-                className={`fa-solid ${
-                  editando
-                    ? "fa-pen-to-square"
-                    : "fa-screwdriver-wrench"
-                } me-2`}
-              ></i>
+            <div className="admin-summary-card">
 
-              {editando
-                ? "Editar repuesto"
-                : "Gestión de repuestos"}
+              <div className="admin-summary-icon blue">
 
-            </h5>
+                <i className="fa-solid fa-boxes-stacked"></i>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Repuestos
+                </small>
+
+
+                <h3>
+                  {productos.length}
+                </h3>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div className="col-md-4">
+
+            <div className="admin-summary-card">
+
+              <div className="admin-summary-icon orange">
+
+                <i className="fa-solid fa-users"></i>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Usuarios
+                </small>
+
+
+                <h3>
+                  {usuarios.length}
+                </h3>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div className="col-md-4">
+
+            <div className="admin-summary-card">
+
+              <div className="admin-summary-icon green">
+
+                <i className="fa-solid fa-shield-halved"></i>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Rol
+                </small>
+
+
+                <h3>
+                  ADMIN
+                </h3>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* GESTIÓN REPUESTOS */}
+
+        <div className="admin-section-title">
+
+          <span className="admin-label">
+            CATÁLOGO
+          </span>
+
+
+          <h2>
+            Gestión de repuestos
+          </h2>
+
+
+          <p>
+            Agrega, modifica o elimina repuestos.
+          </p>
+
+        </div>
+
+
+        {/* FORMULARIO */}
+
+        <div className="card admin-card mb-4">
+
+          <div className="card-header admin-card-header">
+
+            <div className="d-flex align-items-center">
+
+              <div className="admin-header-icon">
+
+                <i
+                  className={`fa-solid ${
+                    editando !== null
+                      ? "fa-pen-to-square"
+                      : "fa-plus"
+                  }`}
+                ></i>
+
+              </div>
+
+
+              <div>
+
+                <h5 className="mb-0">
+
+                  {editando !== null
+                    ? "Editar repuesto"
+                    : "Agregar repuesto"}
+
+                </h5>
+
+              </div>
+
+            </div>
 
           </div>
 
 
           <div className="card-body p-4">
 
-            <form onSubmit={guardarProducto}>
+            <form
+              onSubmit={
+                guardarProducto
+              }
+            >
 
-              <div className="row g-3">
+              <div className="row g-4">
 
-                {/* NOMBRE */}
 
                 <div className="col-md-6">
 
-                  <label className="form-label fw-bold">
-                    Nombre del repuesto
+                  <label className="form-label">
+                    Nombre
                   </label>
+
 
                   <input
                     type="text"
                     name="nombre"
                     className="form-control"
-                    placeholder="Ej: Bomba de desagüe"
-                    value={formulario.nombre}
-                    onChange={manejarCambio}
+                    value={
+                      formulario.nombre
+                    }
+                    onChange={
+                      manejarCambio
+                    }
                     required
                   />
 
                 </div>
 
 
-                {/* CATEGORÍA */}
-
                 <div className="col-md-6">
 
-                  <label className="form-label fw-bold">
+                  <label className="form-label">
                     Categoría
                   </label>
+
 
                   <select
                     name="categoria"
                     className="form-select"
-                    value={formulario.categoria}
-                    onChange={manejarCambio}
+                    value={
+                      formulario.categoria
+                    }
+                    onChange={
+                      manejarCambio
+                    }
                   >
 
                     <option value="Lavadoras">
                       Lavadoras
                     </option>
+
 
                     <option value="Aspiradoras">
                       Aspiradoras
@@ -261,69 +489,69 @@ function Admin({
                 </div>
 
 
-                {/* DESCRIPCIÓN */}
-
                 <div className="col-12">
 
-                  <label className="form-label fw-bold">
+                  <label className="form-label">
                     Descripción
                   </label>
+
 
                   <textarea
                     name="descripcion"
                     className="form-control"
-                    rows="3"
-                    placeholder="Descripción del repuesto..."
-                    value={formulario.descripcion}
-                    onChange={manejarCambio}
+                    rows="4"
+                    value={
+                      formulario.descripcion
+                    }
+                    onChange={
+                      manejarCambio
+                    }
                     required
                   ></textarea>
 
                 </div>
 
 
-                {/* PRECIO */}
-
                 <div className="col-md-4">
 
-                  <label className="form-label fw-bold">
+                  <label className="form-label">
                     Precio
                   </label>
 
-                  <div className="input-group">
 
-                    <span className="input-group-text">
-                      $
-                    </span>
-
-                    <input
-                      type="text"
-                      name="precio"
-                      className="form-control"
-                      placeholder="85000"
-                      value={formulario.precio}
-                      onChange={manejarCambio}
-                      required
-                    />
-
-                  </div>
+                  <input
+                    type="number"
+                    name="precio"
+                    className="form-control"
+                    min="0"
+                    value={
+                      formulario.precio
+                    }
+                    onChange={
+                      manejarCambio
+                    }
+                    required
+                  />
 
                 </div>
 
 
-                {/* ICONO */}
-
                 <div className="col-md-4">
 
-                  <label className="form-label fw-bold">
+                  <label className="form-label">
                     Icono
                   </label>
+
 
                   <select
                     name="icon"
                     className="form-select"
-                    value={formulario.icon}
-                    onChange={manejarCambio}
+                    value={
+                      formulario.icon
+                    }
+                    onChange={
+                      manejarCambio
+                    }
                   >
 
                     <option value="fa-gears">
@@ -346,6 +574,10 @@ function Admin({
                       Aire
                     </option>
 
+                    <option value="fa-broom">
+                      Cepillo
+                    </option>
+
                     <option value="fa-arrows-rotate">
                       Rotación
                     </option>
@@ -355,19 +587,22 @@ function Admin({
                 </div>
 
 
-                {/* ESTADO */}
-
                 <div className="col-md-4">
 
-                  <label className="form-label fw-bold">
+                  <label className="form-label">
                     Estado
                   </label>
+
 
                   <select
                     name="estado"
                     className="form-select"
-                    value={formulario.estado}
-                    onChange={manejarCambio}
+                    value={
+                      formulario.estado
+                    }
+                    onChange={
+                      manejarCambio
+                    }
                   >
 
                     <option value="">
@@ -391,36 +626,37 @@ function Admin({
                 </div>
 
 
-                {/* BOTONES */}
-
                 <div className="col-12 d-flex gap-2">
 
                   <button
                     type="submit"
-                    className="btn btn-warning fw-bold"
+                    className="btn btn-warning admin-main-button"
                   >
 
                     <i
                       className={`fa-solid ${
-                        editando
+                        editando !== null
                           ? "fa-floppy-disk"
                           : "fa-plus"
                       } me-2`}
                     ></i>
 
-                    {editando
+
+                    {editando !== null
                       ? "Guardar cambios"
                       : "Agregar repuesto"}
 
                   </button>
 
 
-                  {editando && (
+                  {editando !== null && (
 
                     <button
                       type="button"
-                      className="btn btn-secondary"
-                      onClick={limpiarFormulario}
+                      className="btn btn-outline-secondary"
+                      onClick={
+                        limpiarFormulario
+                      }
                     >
                       Cancelar
                     </button>
@@ -438,13 +674,13 @@ function Admin({
         </div>
 
 
-        {/* TABLA REPUESTOS */}
+        {/* TABLA */}
 
-        <div className="card border-0 shadow-sm">
+        <div className="card admin-card">
 
           <div className="card-header bg-white">
 
-            <h5 className="text-primary fw-bold mb-0 py-2">
+            <h5 className="text-primary fw-bold mb-0">
 
               <i className="fa-solid fa-boxes-stacked me-2"></i>
 
@@ -477,107 +713,116 @@ function Admin({
 
               <tbody>
 
-                {productos.map((producto) => (
+                {productos.map(
+                  (producto) => (
 
-                  <tr key={producto.id}>
+                    <tr key={
+                      producto.id
+                    }>
 
-                    <td>
-                      {producto.id}
-                    </td>
+                      <td>
+                        {producto.id}
+                      </td>
 
 
-                    <td>
+                      <td>
 
-                      <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex align-items-center gap-2">
 
-                        <div className="admin-product-icon">
+                          <div className="admin-product-icon">
 
-                          <i
-                            className={`fa-solid ${producto.icon}`}
-                          ></i>
+                            <i
+                              className={`fa-solid ${producto.icon}`}
+                            ></i>
+
+                          </div>
+
+
+                          <strong>
+                            {producto.nombre}
+                          </strong>
 
                         </div>
 
-                        <strong>
-                          {producto.nombre}
+                      </td>
+
+
+                      <td>
+                        <span className="badge bg-light text-primary border">
+
+                          {producto.categoria}
+
+                        </span>
+                      </td>
+
+
+                      <td>
+
+                        <strong className="text-primary">
+
+                          ${producto.precio}
+
                         </strong>
 
-                      </div>
-
-                    </td>
+                      </td>
 
 
-                    <td>
+                      <td>
 
-                      <span className="badge bg-light text-primary border">
-                        {producto.categoria}
-                      </span>
+                        {producto.estado ? (
 
-                    </td>
+                          <span className="badge bg-warning text-dark">
 
+                            {producto.estado}
 
-                    <td>
+                          </span>
 
-                      <strong className="text-primary">
-                        ${producto.precio}
-                      </strong>
+                        ) : "—"}
 
-                    </td>
+                      </td>
 
 
-                    <td>
+                      <td>
 
-                      {producto.estado ? (
+                        <div className="d-flex gap-2">
 
-                        <span className="badge bg-warning text-dark">
-                          {producto.estado}
-                        </span>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={() =>
+                              cargarProducto(
+                                producto
+                              )
+                            }
+                          >
 
-                      ) : (
+                            <i className="fa-solid fa-pen"></i>
 
-                        <span className="text-secondary">
-                          —
-                        </span>
-
-                      )}
-
-                    </td>
-
-
-                    <td>
-
-                      <div className="d-flex gap-2">
-
-                        <button
-                          className="btn btn-sm btn-outline-primary"
-                          onClick={() =>
-                            cargarProducto(producto)
-                          }
-                        >
-
-                          <i className="fa-solid fa-pen"></i>
-
-                        </button>
+                          </button>
 
 
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() =>
-                            eliminar(producto.id)
-                          }
-                        >
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() =>
+                              eliminar(
+                                producto.id
+                              )
+                            }
+                          >
 
-                          <i className="fa-solid fa-trash"></i>
+                            <i className="fa-solid fa-trash"></i>
 
-                        </button>
+                          </button>
 
-                      </div>
+                        </div>
 
-                    </td>
+                      </td>
 
-                  </tr>
+                    </tr>
 
-                ))}
+                  )
+                )}
 
               </tbody>
 
@@ -593,9 +838,15 @@ function Admin({
         <UserCrud
           usuarios={usuarios}
           usuarioActual={usuarioActual}
-          agregarUsuario={agregarUsuario}
-          editarUsuario={editarUsuario}
-          eliminarUsuario={eliminarUsuario}
+          agregarUsuario={
+            agregarUsuario
+          }
+          editarUsuario={
+            editarUsuario
+          }
+          eliminarUsuario={
+            eliminarUsuario
+          }
         />
 
       </div>
