@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 
 import "./App.css";
@@ -14,9 +13,9 @@ import productosIniciales from "./data/productos";
 
 function App() {
 
-  // =================================
+  // ==========================
   // PRODUCTOS
-  // =================================
+  // ==========================
 
   const [productos, setProductos] = useState(() => {
     const guardados = localStorage.getItem("productos");
@@ -27,9 +26,9 @@ function App() {
   });
 
 
-  // =================================
+  // ==========================
   // USUARIOS
-  // =================================
+  // ==========================
 
   const [usuarios, setUsuarios] = useState(() => {
 
@@ -39,7 +38,6 @@ function App() {
       return JSON.parse(guardados);
     }
 
-    // Usuario administrador inicial
     return [
       {
         id: 1,
@@ -59,9 +57,9 @@ function App() {
   });
 
 
-  // =================================
-  // USUARIO ACTUAL
-  // =================================
+  // ==========================
+  // SESIÓN
+  // ==========================
 
   const [usuarioActual, setUsuarioActual] = useState(() => {
 
@@ -74,23 +72,23 @@ function App() {
   });
 
 
-  // =================================
-  // NAVEGACIÓN
-  // =================================
+  // ==========================
+  // PÁGINA
+  // ==========================
 
   const [pagina, setPagina] = useState("home");
 
 
-  // =================================
+  // ==========================
   // BÚSQUEDA
-  // =================================
+  // ==========================
 
   const [busqueda, setBusqueda] = useState("");
 
 
-  // =================================
+  // ==========================
   // LOGIN
-  // =================================
+  // ==========================
 
   const [loginForm, setLoginForm] = useState({
     correo: "",
@@ -98,35 +96,28 @@ function App() {
   });
 
 
-  // =================================
+  // ==========================
   // REGISTRO
-  // =================================
+  // ==========================
 
   const [registroForm, setRegistroForm] = useState({
-
     tipoDocumento: "",
     numeroDocumento: "",
-
     primerNombre: "",
     segundoNombre: "",
-
     primerApellido: "",
     segundoApellido: "",
-
     direccion: "",
-
     correo: "",
-
     password: "",
     confirmarPassword: "",
-
     telefono: ""
   });
 
 
-  // =================================
+  // ==========================
   // CARRITO
-  // =================================
+  // ==========================
 
   const [carrito, setCarrito] = useState([]);
 
@@ -134,37 +125,33 @@ function App() {
     useState(false);
 
 
-  // =================================
+  // ==========================
   // GUARDAR PRODUCTOS
-  // =================================
+  // ==========================
 
   useEffect(() => {
-
     localStorage.setItem(
       "productos",
       JSON.stringify(productos)
     );
-
   }, [productos]);
 
 
-  // =================================
+  // ==========================
   // GUARDAR USUARIOS
-  // =================================
+  // ==========================
 
   useEffect(() => {
-
     localStorage.setItem(
       "usuarios",
       JSON.stringify(usuarios)
     );
-
   }, [usuarios]);
 
 
-  // =================================
+  // ==========================
   // GUARDAR SESIÓN
-  // =================================
+  // ==========================
 
   useEffect(() => {
 
@@ -184,9 +171,9 @@ function App() {
   }, [usuarioActual]);
 
 
-  // =================================
-  // REGISTRAR USUARIO
-  // =================================
+  // ==========================
+  // REGISTRO
+  // ==========================
 
   const registrarUsuario = () => {
 
@@ -207,31 +194,25 @@ function App() {
       );
 
     if (hayCampoVacio) {
-
-      alert(
-        "Completa todos los campos obligatorios."
-      );
-
+      alert("Completa todos los campos obligatorios.");
       return;
     }
 
-
-    // Confirmar contraseña
 
     if (
       registroForm.password !==
       registroForm.confirmarPassword
     ) {
-
-      alert(
-        "Las contraseñas no coinciden."
-      );
-
+      alert("Las contraseñas no coinciden.");
       return;
     }
 
 
-    // Validar correo
+    if (registroForm.password.length < 6) {
+      alert("La contraseña debe tener mínimo 6 caracteres.");
+      return;
+    }
+
 
     const correoExiste = usuarios.some(
       (usuario) =>
@@ -240,16 +221,10 @@ function App() {
     );
 
     if (correoExiste) {
-
-      alert(
-        "Este correo ya está registrado."
-      );
-
+      alert("Este correo ya está registrado.");
       return;
     }
 
-
-    // Validar documento
 
     const documentoExiste = usuarios.some(
       (usuario) =>
@@ -258,61 +233,31 @@ function App() {
     );
 
     if (documentoExiste) {
-
-      alert(
-        "Este número de documento ya está registrado."
-      );
-
+      alert("Este número de documento ya está registrado.");
       return;
     }
 
 
-    // Crear usuario
-
     const nuevoUsuario = {
-
       id: Date.now(),
-
-      tipoDocumento:
-        registroForm.tipoDocumento,
-
-      numeroDocumento:
-        registroForm.numeroDocumento,
-
-      primerNombre:
-        registroForm.primerNombre,
-
-      segundoNombre:
-        registroForm.segundoNombre,
-
-      primerApellido:
-        registroForm.primerApellido,
-
-      segundoApellido:
-        registroForm.segundoApellido,
-
-      direccion:
-        registroForm.direccion,
-
-      correo:
-        registroForm.correo,
-
-      password:
-        registroForm.password,
-
-      telefono:
-        registroForm.telefono,
-
+      tipoDocumento: registroForm.tipoDocumento,
+      numeroDocumento: registroForm.numeroDocumento,
+      primerNombre: registroForm.primerNombre,
+      segundoNombre: registroForm.segundoNombre,
+      primerApellido: registroForm.primerApellido,
+      segundoApellido: registroForm.segundoApellido,
+      direccion: registroForm.direccion,
+      correo: registroForm.correo,
+      password: registroForm.password,
+      telefono: registroForm.telefono,
       rol: "CLIENTE"
     };
 
 
-    setUsuarios(
-      (usuariosActuales) => [
-        ...usuariosActuales,
-        nuevoUsuario
-      ]
-    );
+    setUsuarios((usuariosActuales) => [
+      ...usuariosActuales,
+      nuevoUsuario
+    ]);
 
 
     alert(
@@ -321,23 +266,16 @@ function App() {
 
 
     setRegistroForm({
-
       tipoDocumento: "",
       numeroDocumento: "",
-
       primerNombre: "",
       segundoNombre: "",
-
       primerApellido: "",
       segundoApellido: "",
-
       direccion: "",
-
       correo: "",
-
       password: "",
       confirmarPassword: "",
-
       telefono: ""
     });
 
@@ -346,9 +284,9 @@ function App() {
   };
 
 
-  // =================================
-  // INICIAR SESIÓN
-  // =================================
+  // ==========================
+  // LOGIN
+  // ==========================
 
   const iniciarSesion = () => {
 
@@ -356,11 +294,7 @@ function App() {
       !loginForm.correo.trim() ||
       !loginForm.password.trim()
     ) {
-
-      alert(
-        "Ingresa tu correo y contraseña."
-      );
-
+      alert("Ingresa tu correo y contraseña.");
       return;
     }
 
@@ -369,17 +303,12 @@ function App() {
       (item) =>
         item.correo.toLowerCase() ===
           loginForm.correo.toLowerCase() &&
-        item.password ===
-          loginForm.password
+        item.password === loginForm.password
     );
 
 
     if (!usuario) {
-
-      alert(
-        "Correo o contraseña incorrectos."
-      );
-
+      alert("Correo o contraseña incorrectos.");
       return;
     }
 
@@ -394,242 +323,260 @@ function App() {
 
 
     if (usuario.rol === "ADMIN") {
-
       setPagina("admin");
-
     } else {
-
       setPagina("home");
     }
   };
 
 
-  // =================================
+  // ==========================
   // CERRAR SESIÓN
-  // =================================
+  // ==========================
 
   const cerrarSesion = () => {
 
     setUsuarioActual(null);
-
     setPagina("home");
-
     setBusqueda("");
-
     setCarrito([]);
-
   };
 
 
-  // =================================
-  // CRUD - CREAR
-  // =================================
+  // ==========================
+  // CRUD REPUESTOS - CREAR
+  // ==========================
 
   const agregarProducto = (nuevoProducto) => {
 
-    setProductos(
-      (productosActuales) => [
-        ...productosActuales,
-        nuevoProducto
-      ]
+    setProductos((productosActuales) => [
+      ...productosActuales,
+      nuevoProducto
+    ]);
+
+  };
+
+
+  // ==========================
+  // CRUD REPUESTOS - EDITAR
+  // ==========================
+
+  const editarProducto = (productoActualizado) => {
+
+    setProductos((productosActuales) =>
+      productosActuales.map((producto) =>
+        producto.id === productoActualizado.id
+          ? productoActualizado
+          : producto
+      )
     );
 
   };
 
 
-  // =================================
-  // CRUD - EDITAR
-  // =================================
-
-  const editarProducto = (
-    productoActualizado
-  ) => {
-
-    setProductos(
-      (productosActuales) =>
-        productosActuales.map(
-          (producto) =>
-            producto.id ===
-            productoActualizado.id
-              ? productoActualizado
-              : producto
-        )
-    );
-
-  };
-
-
-  // =================================
-  // CRUD - ELIMINAR
-  // =================================
+  // ==========================
+  // CRUD REPUESTOS - ELIMINAR
+  // ==========================
 
   const eliminarProducto = (id) => {
 
-    setProductos(
-      (productosActuales) =>
-        productosActuales.filter(
-          (producto) =>
-            producto.id !== id
-        )
+    setProductos((productosActuales) =>
+      productosActuales.filter(
+        (producto) => producto.id !== id
+      )
     );
 
 
-    // También quitar del carrito
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.filter(
-          (producto) =>
-            producto.id !== id
-        )
+    setCarrito((carritoActual) =>
+      carritoActual.filter(
+        (producto) => producto.id !== id
+      )
     );
 
   };
 
 
-  // =================================
+  // ==========================
+  // CRUD USUARIOS - CREAR
+  // ==========================
+
+  const agregarUsuario = (nuevoUsuario) => {
+
+    setUsuarios((usuariosActuales) => [
+      ...usuariosActuales,
+      nuevoUsuario
+    ]);
+
+  };
+
+
+  // ==========================
+  // CRUD USUARIOS - EDITAR
+  // ==========================
+
+  const editarUsuario = (usuarioActualizado) => {
+
+    setUsuarios((usuariosActuales) =>
+      usuariosActuales.map((usuario) =>
+        usuario.id === usuarioActualizado.id
+          ? usuarioActualizado
+          : usuario
+      )
+    );
+
+
+    if (
+      usuarioActual?.id ===
+      usuarioActualizado.id
+    ) {
+
+      setUsuarioActual(usuarioActualizado);
+
+    }
+  };
+
+
+  // ==========================
+  // CRUD USUARIOS - ELIMINAR
+  // ==========================
+
+  const eliminarUsuario = (id) => {
+
+    if (usuarioActual?.id === id) {
+      alert("No puedes eliminar tu propia cuenta.");
+      return;
+    }
+
+
+    setUsuarios((usuariosActuales) =>
+      usuariosActuales.filter(
+        (usuario) => usuario.id !== id
+      )
+    );
+
+  };
+
+
+  // ==========================
   // CARRITO - AGREGAR
-  // =================================
+  // ==========================
 
   const agregarAlCarrito = (producto) => {
 
-    setCarrito(
-      (carritoActual) => {
+    setCarrito((carritoActual) => {
 
-        const productoExistente =
-          carritoActual.find(
-            (item) =>
-              item.id === producto.id
-          );
+      const existe = carritoActual.find(
+        (item) => item.id === producto.id
+      );
 
 
-        if (productoExistente) {
+      if (existe) {
 
-          return carritoActual.map(
-            (item) =>
-              item.id === producto.id
-                ? {
-                    ...item,
-                    cantidad:
-                      item.cantidad + 1
-                  }
-                : item
-          );
-
-        }
-
-
-        return [
-          ...carritoActual,
-
-          {
-            ...producto,
-            cantidad: 1
-          }
-        ];
+        return carritoActual.map((item) =>
+          item.id === producto.id
+            ? {
+                ...item,
+                cantidad: item.cantidad + 1
+              }
+            : item
+        );
 
       }
-    );
+
+
+      return [
+        ...carritoActual,
+        {
+          ...producto,
+          cantidad: 1
+        }
+      ];
+
+    });
 
 
     setCarritoAbierto(true);
   };
 
 
-  // =================================
+  // ==========================
   // CARRITO - AUMENTAR
-  // =================================
+  // ==========================
 
   const aumentarCantidad = (id) => {
 
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.map(
-          (producto) =>
-            producto.id === id
-              ? {
-                  ...producto,
-                  cantidad:
-                    producto.cantidad + 1
-                }
-              : producto
-        )
+    setCarrito((carritoActual) =>
+      carritoActual.map((producto) =>
+        producto.id === id
+          ? {
+              ...producto,
+              cantidad: producto.cantidad + 1
+            }
+          : producto
+      )
     );
 
   };
 
 
-  // =================================
+  // ==========================
   // CARRITO - DISMINUIR
-  // =================================
+  // ==========================
 
   const disminuirCantidad = (id) => {
 
-    setCarrito(
-      (carritoActual) =>
-        carritoActual
-          .map(
-            (producto) =>
-              producto.id === id
-                ? {
-                    ...producto,
-                    cantidad:
-                      producto.cantidad - 1
-                  }
-                : producto
-          )
-          .filter(
-            (producto) =>
-              producto.cantidad > 0
-          )
-    );
-
-  };
-
-
-  // =================================
-  // CARRITO - ELIMINAR
-  // =================================
-
-  const eliminarDelCarrito = (id) => {
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.filter(
-          (producto) =>
-            producto.id !== id
+    setCarrito((carritoActual) =>
+      carritoActual
+        .map((producto) =>
+          producto.id === id
+            ? {
+                ...producto,
+                cantidad: producto.cantidad - 1
+              }
+            : producto
+        )
+        .filter(
+          (producto) => producto.cantidad > 0
         )
     );
 
   };
 
 
-  // =================================
-  // CARRITO - VACIAR
-  // =================================
+  // ==========================
+  // CARRITO - ELIMINAR
+  // ==========================
 
-  const vaciarCarrito = () => {
+  const eliminarDelCarrito = (id) => {
 
-    setCarrito([]);
+    setCarrito((carritoActual) =>
+      carritoActual.filter(
+        (producto) => producto.id !== id
+      )
+    );
 
   };
 
 
-  // =================================
-  // CANTIDAD DEL CARRITO
-  // =================================
+  // ==========================
+  // VACIAR CARRITO
+  // ==========================
 
-  const cantidadCarrito =
-    carrito.reduce(
-      (total, producto) =>
-        total + producto.cantidad,
-      0
-    );
+  const vaciarCarrito = () => {
+    setCarrito([]);
+  };
 
 
-  // =================================
-  // VISTA
-  // =================================
+  // ==========================
+  // TOTAL PRODUCTOS CARRITO
+  // ==========================
+
+  const cantidadCarrito = carrito.reduce(
+    (total, producto) =>
+      total + producto.cantidad,
+    0
+  );
+
 
   return (
     <>
@@ -650,9 +597,7 @@ function App() {
         <Home
           busqueda={busqueda}
           productos={productos}
-          agregarAlCarrito={
-            agregarAlCarrito
-          }
+          agregarAlCarrito={agregarAlCarrito}
         />
       )}
 
@@ -661,9 +606,7 @@ function App() {
         <Login
           formulario={loginForm}
           setFormulario={setLoginForm}
-          iniciarSesion={
-            iniciarSesion
-          }
+          iniciarSesion={iniciarSesion}
           irRegistro={() =>
             setPagina("registro")
           }
@@ -674,12 +617,8 @@ function App() {
       {pagina === "registro" && (
         <Registro
           formulario={registroForm}
-          setFormulario={
-            setRegistroForm
-          }
-          registrarUsuario={
-            registrarUsuario
-          }
+          setFormulario={setRegistroForm}
+          registrarUsuario={registrarUsuario}
           irLogin={() =>
             setPagina("login")
           }
@@ -689,18 +628,21 @@ function App() {
 
       {pagina === "admin" &&
         usuarioActual?.rol === "ADMIN" && (
+
           <Admin
             productos={productos}
-            agregarProducto={
-              agregarProducto
-            }
-            editarProducto={
-              editarProducto
-            }
-            eliminarProducto={
-              eliminarProducto
-            }
+            agregarProducto={agregarProducto}
+            editarProducto={editarProducto}
+            eliminarProducto={eliminarProducto}
+
+            usuarios={usuarios}
+            usuarioActual={usuarioActual}
+
+            agregarUsuario={agregarUsuario}
+            editarUsuario={editarUsuario}
+            eliminarUsuario={eliminarUsuario}
           />
+
         )}
 
 
@@ -718,15 +660,12 @@ function App() {
               </h2>
 
               <p className="text-secondary">
-                Solo los administradores
-                pueden acceder.
+                Solo los administradores pueden acceder.
               </p>
 
               <button
                 className="btn btn-primary"
-                onClick={() =>
-                  setPagina("home")
-                }
+                onClick={() => setPagina("home")}
               >
                 Volver al inicio
               </button>
@@ -734,7 +673,6 @@ function App() {
             </div>
 
           </main>
-
         )}
 
 
@@ -744,18 +682,10 @@ function App() {
         cerrarCarrito={() =>
           setCarritoAbierto(false)
         }
-        aumentarCantidad={
-          aumentarCantidad
-        }
-        disminuirCantidad={
-          disminuirCantidad
-        }
-        eliminarProducto={
-          eliminarDelCarrito
-        }
-        vaciarCarrito={
-          vaciarCarrito
-        }
+        aumentarCantidad={aumentarCantidad}
+        disminuirCantidad={disminuirCantidad}
+        eliminarProducto={eliminarDelCarrito}
+        vaciarCarrito={vaciarCarrito}
       />
 
     </>

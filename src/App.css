@@ -379,3 +379,92 @@ body {
 .table th {
   white-space: nowrap;
 }
+
+
+/* =================================
+   LOGIN Y REGISTRO
+================================= */
+
+.auth-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf3ff,
+      #ffffff
+    );
+}
+
+.auth-card {
+  border-radius: 18px;
+}
+
+.auth-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--azul);
+  color: var(--naranja);
+
+  border-radius: 50%;
+
+  font-size: 28px;
+}
+
+.auth-page .form-control:focus,
+.auth-page .form-select:focus {
+  border-color: var(--azul);
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgba(7, 86, 168, 0.15);
+}
+
+.auth-page .input-group-text {
+  background: #eaf3ff;
+  color: var(--azul);
+}
+
+
+/* =================================
+   CRUD DE USUARIOS
+================================= */
+
+.admin-user-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eaf3ff;
+  color: var(--azul);
+
+  border-radius: 50%;
+}
+
+.admin-product-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eaf3ff;
+  color: var(--azul);
+
+  border-radius: 8px;
+}
+
+.table th {
+  white-space: nowrap;
+}

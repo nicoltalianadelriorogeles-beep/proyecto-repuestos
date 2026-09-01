@@ -1,4 +1,3 @@
-
 function Registro({
   formulario,
   setFormulario,
@@ -38,14 +37,10 @@ function Registro({
 
               <div className="card-body p-4 p-md-5">
 
-                {/* ENCABEZADO */}
-
                 <div className="text-center mb-4">
 
                   <div className="auth-icon">
-
                     <i className="fa-solid fa-user-plus"></i>
-
                   </div>
 
                   <h2 className="fw-bold text-primary">
@@ -63,9 +58,6 @@ function Registro({
 
                   <div className="row g-3">
 
-
-                    {/* TIPO DOCUMENTO */}
-
                     <div className="col-md-4">
 
                       <label className="form-label fw-bold">
@@ -75,9 +67,7 @@ function Registro({
                       <select
                         name="tipoDocumento"
                         className="form-select"
-                        value={
-                          formulario.tipoDocumento
-                        }
+                        value={formulario.tipoDocumento}
                         onChange={manejarCambio}
                         required
                       >
@@ -107,38 +97,23 @@ function Registro({
                     </div>
 
 
-                    {/* NÚMERO */}
-
                     <div className="col-md-8">
 
                       <label className="form-label fw-bold">
                         Número de documento
                       </label>
 
-                      <div className="input-group">
-
-                        <span className="input-group-text">
-                          <i className="fa-solid fa-id-card"></i>
-                        </span>
-
-                        <input
-                          type="text"
-                          name="numeroDocumento"
-                          className="form-control"
-                          placeholder="Número de documento"
-                          value={
-                            formulario.numeroDocumento
-                          }
-                          onChange={manejarCambio}
-                          required
-                        />
-
-                      </div>
+                      <input
+                        type="text"
+                        name="numeroDocumento"
+                        className="form-control"
+                        value={formulario.numeroDocumento}
+                        onChange={manejarCambio}
+                        required
+                      />
 
                     </div>
 
-
-                    {/* PRIMER NOMBRE */}
 
                     <div className="col-md-6">
 
@@ -150,18 +125,13 @@ function Registro({
                         type="text"
                         name="primerNombre"
                         className="form-control"
-                        placeholder="Primer nombre"
-                        value={
-                          formulario.primerNombre
-                        }
+                        value={formulario.primerNombre}
                         onChange={manejarCambio}
                         required
                       />
 
                     </div>
 
-
-                    {/* SEGUNDO NOMBRE */}
 
                     <div className="col-md-6">
 
@@ -173,17 +143,12 @@ function Registro({
                         type="text"
                         name="segundoNombre"
                         className="form-control"
-                        placeholder="Segundo nombre"
-                        value={
-                          formulario.segundoNombre
-                        }
+                        value={formulario.segundoNombre}
                         onChange={manejarCambio}
                       />
 
                     </div>
 
-
-                    {/* PRIMER APELLIDO */}
 
                     <div className="col-md-6">
 
@@ -195,18 +160,13 @@ function Registro({
                         type="text"
                         name="primerApellido"
                         className="form-control"
-                        placeholder="Primer apellido"
-                        value={
-                          formulario.primerApellido
-                        }
+                        value={formulario.primerApellido}
                         onChange={manejarCambio}
                         required
                       />
 
                     </div>
 
-
-                    {/* SEGUNDO APELLIDO */}
 
                     <div className="col-md-6">
 
@@ -218,17 +178,12 @@ function Registro({
                         type="text"
                         name="segundoApellido"
                         className="form-control"
-                        placeholder="Segundo apellido"
-                        value={
-                          formulario.segundoApellido
-                        }
+                        value={formulario.segundoApellido}
                         onChange={manejarCambio}
                       />
 
                     </div>
 
-
-                    {/* DIRECCIÓN */}
 
                     <div className="col-12">
 
@@ -246,10 +201,7 @@ function Registro({
                           type="text"
                           name="direccion"
                           className="form-control"
-                          placeholder="Dirección de residencia"
-                          value={
-                            formulario.direccion
-                          }
+                          value={formulario.direccion}
                           onChange={manejarCambio}
                           required
                         />
@@ -258,8 +210,6 @@ function Registro({
 
                     </div>
 
-
-                    {/* CORREO */}
 
                     <div className="col-md-7">
 
@@ -277,10 +227,7 @@ function Registro({
                           type="email"
                           name="correo"
                           className="form-control"
-                          placeholder="correo@ejemplo.com"
-                          value={
-                            formulario.correo
-                          }
+                          value={formulario.correo}
                           onChange={manejarCambio}
                           required
                         />
@@ -289,8 +236,6 @@ function Registro({
 
                     </div>
 
-
-                    {/* TELÉFONO */}
 
                     <div className="col-md-5">
 
@@ -308,10 +253,7 @@ function Registro({
                           type="tel"
                           name="telefono"
                           className="form-control"
-                          placeholder="300 000 0000"
-                          value={
-                            formulario.telefono
-                          }
+                          value={formulario.telefono}
                           onChange={manejarCambio}
                           required
                         />
@@ -320,8 +262,6 @@ function Registro({
 
                     </div>
 
-
-                    {/* CONTRASEÑA */}
 
                     <div className="col-md-6">
 
@@ -340,9 +280,7 @@ function Registro({
                           name="password"
                           className="form-control"
                           placeholder="Mínimo 6 caracteres"
-                          value={
-                            formulario.password
-                          }
+                          value={formulario.password}
                           onChange={manejarCambio}
                           minLength="6"
                           required
@@ -352,8 +290,6 @@ function Registro({
 
                     </div>
 
-
-                    {/* CONFIRMAR */}
 
                     <div className="col-md-6">
 
@@ -371,10 +307,7 @@ function Registro({
                           type="password"
                           name="confirmarPassword"
                           className="form-control"
-                          placeholder="Repite la contraseña"
-                          value={
-                            formulario.confirmarPassword
-                          }
+                          value={formulario.confirmarPassword}
                           onChange={manejarCambio}
                           minLength="6"
                           required
@@ -384,8 +317,6 @@ function Registro({
 
                     </div>
 
-
-                    {/* BOTÓN */}
 
                     <div className="col-12 mt-4">
 
@@ -406,8 +337,6 @@ function Registro({
 
                 </form>
 
-
-                {/* VOLVER AL LOGIN */}
 
                 <div className="text-center mt-4">
 

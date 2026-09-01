@@ -1,11 +1,16 @@
-
 import { useState } from "react";
+import UserCrud from "../components/UserCrud";
 
 function Admin({
   productos,
   agregarProducto,
   editarProducto,
-  eliminarProducto
+  eliminarProducto,
+  usuarios,
+  usuarioActual,
+  agregarUsuario,
+  editarUsuario,
+  eliminarUsuario
 }) {
 
   const [formulario, setFormulario] =
@@ -98,7 +103,7 @@ function Admin({
   };
 
 
-  const comenzarEdicion = (producto) => {
+  const cargarProducto = (producto) => {
 
     setFormulario({
       nombre: producto.nombre,
@@ -142,7 +147,6 @@ function Admin({
 
       <div className="container">
 
-
         {/* ENCABEZADO */}
 
         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -150,16 +154,15 @@ function Admin({
           <div>
 
             <span className="text-warning fw-bold">
-              ADMINISTRACIÓN
+              PANEL ADMINISTRATIVO
             </span>
 
             <h1 className="fw-bold text-primary">
-              Gestión de repuestos
+              Administración
             </h1>
 
-            <p className="text-secondary">
-              Administra los productos de
-              Producciones Angel.
+            <p className="text-secondary mb-0">
+              Gestiona los repuestos y usuarios de Producciones Angel.
             </p>
 
           </div>
@@ -167,22 +170,18 @@ function Admin({
 
           <div className="bg-primary text-white rounded-3 p-3 text-center">
 
-            <i className="fa-solid fa-boxes-stacked fa-2x"></i>
+            <i className="fa-solid fa-user-shield fa-2x"></i>
 
-            <div className="fs-4 fw-bold">
-              {productos.length}
+            <div className="fw-bold mt-1">
+              ADMIN
             </div>
-
-            <small>
-              Repuestos
-            </small>
 
           </div>
 
         </div>
 
 
-        {/* FORMULARIO */}
+        {/* CRUD REPUESTOS */}
 
         <div className="card border-0 shadow-sm mb-5">
 
@@ -194,13 +193,13 @@ function Admin({
                 className={`fa-solid ${
                   editando
                     ? "fa-pen-to-square"
-                    : "fa-plus"
+                    : "fa-screwdriver-wrench"
                 } me-2`}
               ></i>
 
               {editando
                 ? "Editar repuesto"
-                : "Agregar repuesto"}
+                : "Gestión de repuestos"}
 
             </h5>
 
@@ -213,11 +212,12 @@ function Admin({
 
               <div className="row g-3">
 
+                {/* NOMBRE */}
 
                 <div className="col-md-6">
 
                   <label className="form-label fw-bold">
-                    Nombre
+                    Nombre del repuesto
                   </label>
 
                   <input
@@ -233,6 +233,8 @@ function Admin({
                 </div>
 
 
+                {/* CATEGORÍA */}
+
                 <div className="col-md-6">
 
                   <label className="form-label fw-bold">
@@ -242,9 +244,7 @@ function Admin({
                   <select
                     name="categoria"
                     className="form-select"
-                    value={
-                      formulario.categoria
-                    }
+                    value={formulario.categoria}
                     onChange={manejarCambio}
                   >
 
@@ -261,6 +261,8 @@ function Admin({
                 </div>
 
 
+                {/* DESCRIPCIÓN */}
+
                 <div className="col-12">
 
                   <label className="form-label fw-bold">
@@ -272,15 +274,15 @@ function Admin({
                     className="form-control"
                     rows="3"
                     placeholder="Descripción del repuesto..."
-                    value={
-                      formulario.descripcion
-                    }
+                    value={formulario.descripcion}
                     onChange={manejarCambio}
                     required
                   ></textarea>
 
                 </div>
 
+
+                {/* PRECIO */}
 
                 <div className="col-md-4">
 
@@ -299,9 +301,7 @@ function Admin({
                       name="precio"
                       className="form-control"
                       placeholder="85000"
-                      value={
-                        formulario.precio
-                      }
+                      value={formulario.precio}
                       onChange={manejarCambio}
                       required
                     />
@@ -310,6 +310,8 @@ function Admin({
 
                 </div>
 
+
+                {/* ICONO */}
 
                 <div className="col-md-4">
 
@@ -353,6 +355,8 @@ function Admin({
                 </div>
 
 
+                {/* ESTADO */}
+
                 <div className="col-md-4">
 
                   <label className="form-label fw-bold">
@@ -387,6 +391,8 @@ function Admin({
                 </div>
 
 
+                {/* BOTONES */}
+
                 <div className="col-12 d-flex gap-2">
 
                   <button
@@ -414,9 +420,7 @@ function Admin({
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      onClick={
-                        limpiarFormulario
-                      }
+                      onClick={limpiarFormulario}
                     >
                       Cancelar
                     </button>
@@ -434,7 +438,7 @@ function Admin({
         </div>
 
 
-        {/* TABLA */}
+        {/* TABLA REPUESTOS */}
 
         <div className="card border-0 shadow-sm">
 
@@ -442,7 +446,7 @@ function Admin({
 
             <h5 className="text-primary fw-bold mb-0 py-2">
 
-              <i className="fa-solid fa-list me-2"></i>
+              <i className="fa-solid fa-boxes-stacked me-2"></i>
 
               Repuestos registrados
 
@@ -460,15 +464,10 @@ function Admin({
                 <tr>
 
                   <th>ID</th>
-
                   <th>Producto</th>
-
                   <th>Categoría</th>
-
                   <th>Precio</th>
-
                   <th>Estado</th>
-
                   <th>Acciones</th>
 
                 </tr>
@@ -478,117 +477,107 @@ function Admin({
 
               <tbody>
 
-                {productos.map(
-                  (producto) => (
+                {productos.map((producto) => (
 
-                    <tr
-                      key={producto.id}
-                    >
+                  <tr key={producto.id}>
 
-                      <td>
-                        {producto.id}
-                      </td>
+                    <td>
+                      {producto.id}
+                    </td>
 
 
-                      <td>
+                    <td>
 
-                        <div className="d-flex align-items-center gap-2">
+                      <div className="d-flex align-items-center gap-2">
 
-                          <div className="admin-product-icon">
+                        <div className="admin-product-icon">
 
-                            <i
-                              className={`fa-solid ${producto.icon}`}
-                            ></i>
-
-                          </div>
-
-                          <strong>
-                            {producto.nombre}
-                          </strong>
+                          <i
+                            className={`fa-solid ${producto.icon}`}
+                          ></i>
 
                         </div>
 
-                      </td>
-
-
-                      <td>
-
-                        <span className="badge bg-light text-primary border">
-                          {producto.categoria}
-                        </span>
-
-                      </td>
-
-
-                      <td>
-
-                        <strong className="text-primary">
-                          ${producto.precio}
+                        <strong>
+                          {producto.nombre}
                         </strong>
 
-                      </td>
+                      </div>
+
+                    </td>
 
 
-                      <td>
+                    <td>
 
-                        {producto.estado ? (
+                      <span className="badge bg-light text-primary border">
+                        {producto.categoria}
+                      </span>
 
-                          <span className="badge bg-warning text-dark">
-                            {producto.estado}
-                          </span>
-
-                        ) : (
-
-                          <span className="text-secondary">
-                            —
-                          </span>
-
-                        )}
-
-                      </td>
+                    </td>
 
 
-                      <td>
+                    <td>
 
-                        <div className="d-flex gap-2">
+                      <strong className="text-primary">
+                        ${producto.precio}
+                      </strong>
 
-                          <button
-                            className="btn btn-sm btn-outline-primary"
-                            onClick={() =>
-                              comenzarEdicion(
-                                producto
-                              )
-                            }
-                            title="Editar"
-                          >
-
-                            <i className="fa-solid fa-pen"></i>
-
-                          </button>
+                    </td>
 
 
-                          <button
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() =>
-                              eliminar(
-                                producto.id
-                              )
-                            }
-                            title="Eliminar"
-                          >
+                    <td>
 
-                            <i className="fa-solid fa-trash"></i>
+                      {producto.estado ? (
 
-                          </button>
+                        <span className="badge bg-warning text-dark">
+                          {producto.estado}
+                        </span>
 
-                        </div>
+                      ) : (
 
-                      </td>
+                        <span className="text-secondary">
+                          —
+                        </span>
 
-                    </tr>
+                      )}
 
-                  )
-                )}
+                    </td>
+
+
+                    <td>
+
+                      <div className="d-flex gap-2">
+
+                        <button
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={() =>
+                            cargarProducto(producto)
+                          }
+                        >
+
+                          <i className="fa-solid fa-pen"></i>
+
+                        </button>
+
+
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            eliminar(producto.id)
+                          }
+                        >
+
+                          <i className="fa-solid fa-trash"></i>
+
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                ))}
 
               </tbody>
 
@@ -597,6 +586,17 @@ function Admin({
           </div>
 
         </div>
+
+
+        {/* CRUD USUARIOS */}
+
+        <UserCrud
+          usuarios={usuarios}
+          usuarioActual={usuarioActual}
+          agregarUsuario={agregarUsuario}
+          editarUsuario={editarUsuario}
+          eliminarUsuario={eliminarUsuario}
+        />
 
       </div>
 

@@ -1,4 +1,3 @@
-
 function Login({
   formulario,
   setFormulario,
@@ -41,9 +40,7 @@ function Login({
                 <div className="text-center mb-4">
 
                   <div className="auth-icon">
-
                     <i className="fa-solid fa-right-to-bracket"></i>
-
                   </div>
 
                   <h2 className="fw-bold text-primary">
@@ -58,8 +55,6 @@ function Login({
 
 
                 <form onSubmit={manejarSubmit}>
-
-                  {/* CORREO */}
 
                   <div className="mb-3">
 
@@ -88,8 +83,6 @@ function Login({
                   </div>
 
 
-                  {/* CONTRASEÑA */}
-
                   <div className="mb-4">
 
                     <label className="form-label fw-bold">
@@ -117,8 +110,6 @@ function Login({
                   </div>
 
 
-                  {/* BOTÓN */}
-
                   <button
                     type="submit"
                     className="btn btn-primary w-100 py-2 fw-bold"
@@ -132,8 +123,6 @@ function Login({
 
                 </form>
 
-
-                {/* REGISTRO */}
 
                 <div className="text-center mt-4">
 
