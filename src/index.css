@@ -10,16 +10,11 @@ html {
 body {
   margin: 0;
 
-  background: #f7f9fc;
+  background: #f4f7fb;
 
-  color: #344054;
+  color: #172033;
 
-  font-family:
-    "Segoe UI",
-    Roboto,
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
 
   -webkit-font-smoothing: antialiased;
 

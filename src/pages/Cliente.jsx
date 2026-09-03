@@ -5,8 +5,13 @@ function Cliente({
   seccion,
   cambiarSeccion,
   agregarAlCarrito,
-  cerrarSesion
+  cerrarSesion,
+  verProducto
 }) {
+
+  /* =================================
+     NOMBRE COMPLETO
+  ================================= */
 
   const nombreCompleto = [
     usuarioActual?.primerNombre,
@@ -18,31 +23,31 @@ function Cliente({
     .join(" ");
 
 
-  const textoBusqueda =
-    (busqueda || "")
-      .trim()
-      .toLowerCase();
+  /* =================================
+     BÚSQUEDA
+  ================================= */
+
+  const textoBusqueda = (busqueda || "")
+    .trim()
+    .toLowerCase();
 
 
-  const productosFiltrados =
-    productos.filter((producto) => {
+  const productosFiltrados = productos.filter((producto) => {
 
-      const texto =
-        `${producto.nombre}
-        ${producto.categoria}
-        ${producto.descripcion}`
-          .toLowerCase();
+    const texto = `
+      ${producto.nombre}
+      ${producto.categoria}
+      ${producto.descripcion}
+    `.toLowerCase();
 
-      return texto.includes(
-        textoBusqueda
-      );
+    return texto.includes(textoBusqueda);
 
-    });
+  });
 
 
-  /* ====================================
+  /* =================================
      INICIO
-  ==================================== */
+  ================================= */
 
   const vistaInicio = () => (
 
@@ -52,15 +57,11 @@ function Cliente({
 
         <div className="row align-items-center g-5">
 
-
           <div className="col-lg-7">
 
             <span className="cliente-label">
-
               ÁREA DEL CLIENTE
-
             </span>
-
 
             <h1 className="cliente-title">
 
@@ -72,32 +73,23 @@ function Cliente({
 
             </h1>
 
-
             <p className="cliente-subtitle">
-
-              Bienvenido a tu espacio de
-              Producciones Angel.
-
+              Bienvenido a tu espacio de Producciones Angel.
             </p>
-
 
             <p className="text-secondary">
 
-              Desde aquí puedes consultar nuestros
-              repuestos, revisar tus categorías
-              y administrar tu información personal.
+              Desde aquí puedes consultar nuestros repuestos,
+              revisar las categorías y administrar tu información.
 
             </p>
-
 
             <div className="d-flex gap-3 mt-4 flex-wrap">
 
               <button
                 type="button"
                 className="btn btn-warning fw-bold"
-                onClick={() =>
-                  cambiarSeccion("repuestos")
-                }
+                onClick={() => cambiarSeccion("repuestos")}
               >
 
                 <i className="fa-solid fa-box-open me-2"></i>
@@ -110,9 +102,7 @@ function Cliente({
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={() =>
-                  cambiarSeccion("perfil")
-                }
+                onClick={() => cambiarSeccion("perfil")}
               >
 
                 <i className="fa-solid fa-user me-2"></i>
@@ -136,17 +126,13 @@ function Cliente({
 
               </div>
 
-
               <h4>
                 Tu espacio personal
               </h4>
 
-
               <p>
-
-                Consulta productos y administra
-                tus datos desde un solo lugar.
-
+                Consulta productos y administra tus datos
+                desde un solo lugar.
               </p>
 
             </div>
@@ -162,9 +148,9 @@ function Cliente({
   );
 
 
-  /* ====================================
+  /* =================================
      REPUESTOS
-  ==================================== */
+  ================================= */
 
   const vistaRepuestos = () => (
 
@@ -172,18 +158,15 @@ function Cliente({
 
       <div className="container py-5">
 
-
         <div className="section-heading">
 
           <span className="cliente-label">
             CATÁLOGO
           </span>
 
-
           <h2>
             Nuestros repuestos
           </h2>
-
 
           <p>
             Encuentra el repuesto que necesitas.
@@ -196,86 +179,101 @@ function Cliente({
 
           {productosFiltrados.length > 0 ? (
 
-            productosFiltrados.map(
-              (producto) => (
+            productosFiltrados.map((producto) => (
 
-                <div
-                  className="col-md-6 col-lg-3"
-                  key={producto.id}
-                >
+              <div
+                className="col-md-6 col-lg-3"
+                key={producto.id}
+              >
 
-                  <div className="card cliente-product-card h-100">
-
-
-                    <div className="cliente-product-icon">
-
-                      <i
-                        className={`fa-solid ${producto.icon}`}
-                      ></i>
+                <div className="card cliente-product-card h-100">
 
 
-                      {producto.estado && (
+                  {/* ICONO */}
 
-                        <span className="badge bg-warning text-dark">
+                  <div className="cliente-product-icon">
 
-                          {producto.estado}
-
-                        </span>
-
-                      )}
-
-                    </div>
+                    <i
+                      className={`fa-solid ${producto.icon}`}
+                    ></i>
 
 
-                    <div className="card-body d-flex flex-column">
+                    {producto.estado && (
 
-                      <small className="text-warning fw-bold">
+                      <span className="badge bg-warning text-dark">
 
-                        {producto.categoria}
+                        {producto.estado}
 
-                      </small>
+                      </span>
 
-
-                      <h5 className="fw-bold text-primary mt-2">
-
-                        {producto.nombre}
-
-                      </h5>
+                    )}
 
 
-                      <p className="text-secondary small flex-grow-1">
+                    {/* BOTÓN VER */}
 
-                        {producto.descripcion}
+                    <button
+                      type="button"
+                      className="btn btn-light product-eye"
+                      onClick={() => verProducto(producto)}
+                      title="Ver detalles del producto"
+                    >
 
-                      </p>
+                      <i className="fa-solid fa-eye text-primary"></i>
+
+                    </button>
+
+                  </div>
 
 
-                      <div className="d-flex justify-content-between align-items-center mt-3">
+                  {/* INFORMACIÓN */}
 
-                        <strong className="text-primary fs-5">
+                  <div className="card-body d-flex flex-column">
 
-                          ${producto.precio}
+                    <small className="text-warning fw-bold">
 
-                        </strong>
+                      {producto.categoria}
+
+                    </small>
 
 
-                        <button
-                          type="button"
-                          className="btn btn-warning"
-                          onClick={() =>
-                            agregarAlCarrito(
-                              producto
-                            )
-                          }
-                        >
+                    <h5 className="fw-bold text-primary mt-2">
 
-                          <i className="fa-solid fa-cart-plus me-1"></i>
+                      {producto.nombre}
 
-                          Agregar
+                    </h5>
 
-                        </button>
 
-                      </div>
+                    <p className="text-secondary small flex-grow-1">
+
+                      {producto.descripcion}
+
+                    </p>
+
+
+                    {/* PRECIO */}
+
+                    <div className="d-flex justify-content-between align-items-center mt-3">
+
+                      <strong className="text-primary fs-5">
+
+                        ${producto.precio}
+
+                      </strong>
+
+
+                      <button
+                        type="button"
+                        className="btn btn-warning"
+                        onClick={() =>
+                          agregarAlCarrito(producto)
+                        }
+                      >
+
+                        <i className="fa-solid fa-cart-plus me-1"></i>
+
+                        Agregar
+
+                      </button>
 
                     </div>
 
@@ -283,8 +281,9 @@ function Cliente({
 
                 </div>
 
-              )
-            )
+              </div>
+
+            ))
 
           ) : (
 
@@ -295,15 +294,11 @@ function Cliente({
                 <i className="fa-solid fa-box-open fa-4x text-secondary mb-3"></i>
 
                 <h4 className="fw-bold text-primary">
-
                   No encontramos productos
-
                 </h4>
 
                 <p className="text-secondary">
-
                   Prueba con otra búsqueda.
-
                 </p>
 
               </div>
@@ -321,9 +316,9 @@ function Cliente({
   );
 
 
-  /* ====================================
+  /* =================================
      CATEGORÍAS
-  ==================================== */
+  ================================= */
 
   const vistaCategorias = () => (
 
@@ -331,18 +326,15 @@ function Cliente({
 
       <div className="container py-5">
 
-
         <div className="section-heading">
 
           <span className="cliente-label">
             CATEGORÍAS
           </span>
 
-
           <h2>
             Repuestos por categoría
           </h2>
-
 
           <p>
             Selecciona el tipo de electrodoméstico.
@@ -353,6 +345,8 @@ function Cliente({
 
         <div className="row g-4">
 
+
+          {/* LAVADORAS */}
 
           <div className="col-md-6">
 
@@ -370,7 +364,6 @@ function Cliente({
                 <h3>
                   Lavadoras
                 </h3>
-
 
                 <p>
                   Bombas, correas, motores,
@@ -399,6 +392,8 @@ function Cliente({
           </div>
 
 
+          {/* ASPIRADORAS */}
+
           <div className="col-md-6">
 
             <div className="cliente-category-large orange">
@@ -415,7 +410,6 @@ function Cliente({
                 <h3>
                   Aspiradoras
                 </h3>
-
 
                 <p>
                   Filtros, mangueras,
@@ -452,249 +446,254 @@ function Cliente({
   );
 
 
-  /* ====================================
+  /* =================================
      PERFIL
-  ==================================== */
+  ================================= */
 
-  const vistaPerfil = () => (
+  const vistaPerfil = () => {
 
-    <section className="cliente-section">
+    const datos = [
 
-      <div className="container py-5">
+      [
+        "Tipo de documento",
+        usuarioActual?.tipoDocumento
+      ],
 
+      [
+        "Número de documento",
+        usuarioActual?.numeroDocumento
+      ],
 
-        <div className="section-heading">
+      [
+        "Primer nombre",
+        usuarioActual?.primerNombre
+      ],
 
-          <span className="cliente-label">
-            MI CUENTA
-          </span>
+      [
+        "Segundo nombre",
+        usuarioActual?.segundoNombre ||
+        "No registrado"
+      ],
 
+      [
+        "Primer apellido",
+        usuarioActual?.primerApellido
+      ],
 
-          <h2>
-            Mi perfil
-          </h2>
+      [
+        "Segundo apellido",
+        usuarioActual?.segundoApellido ||
+        "No registrado"
+      ],
 
+      [
+        "Dirección",
+        usuarioActual?.direccion
+      ],
 
-          <p>
-            Consulta la información de tu cuenta.
-          </p>
+      [
+        "Correo",
+        usuarioActual?.correo
+      ],
 
-        </div>
+      [
+        "Teléfono",
+        usuarioActual?.telefono
+      ]
 
-
-        <div className="row justify-content-center">
-
-          <div className="col-lg-8">
-
-            <div className="cliente-profile-card">
-
-
-              <div className="cliente-profile-header">
-
-                <div className="cliente-profile-avatar">
-
-                  <i className="fa-solid fa-user"></i>
-
-                </div>
-
-
-                <div>
-
-                  <h4>
-                    {nombreCompleto}
-                  </h4>
-
-                  <span>
-                    Cliente
-                  </span>
-
-                </div>
-
-              </div>
+    ];
 
 
-              <div className="cliente-profile-body">
+    return (
+
+      <section className="cliente-section">
+
+        <div className="container py-5">
+
+          <div className="section-heading">
+
+            <span className="cliente-label">
+              MI CUENTA
+            </span>
+
+            <h2>
+              Mi perfil
+            </h2>
+
+            <p>
+              Consulta la información de tu cuenta.
+            </p>
+
+          </div>
 
 
-                <div className="row g-3">
+          <div className="row justify-content-center">
+
+            <div className="col-lg-8">
+
+              <div className="cliente-profile-card">
 
 
-                  <div className="col-md-6">
+                {/* HEADER */}
 
-                    <div className="profile-field">
+                <div className="cliente-profile-header">
 
-                      <small>
-                        Tipo de documento
-                      </small>
+                  <div className="cliente-profile-avatar">
 
-                      <strong>
-                        {usuarioActual?.tipoDocumento}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Número de documento
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.numeroDocumento}
-                      </strong>
-
-                    </div>
+                    <i className="fa-solid fa-user"></i>
 
                   </div>
 
 
-                  <div className="col-md-6">
+                  <div>
 
-                    <div className="profile-field">
+                    <h4>
+                      {nombreCompleto}
+                    </h4>
 
-                      <small>
-                        Primer nombre
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.primerNombre}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Segundo nombre
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.segundoNombre || "No registrado"}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Primer apellido
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.primerApellido}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Segundo apellido
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.segundoApellido || "No registrado"}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-12">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Dirección
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.direccion}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Correo
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.correo}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-md-6">
-
-                    <div className="profile-field">
-
-                      <small>
-                        Teléfono
-                      </small>
-
-                      <strong>
-                        {usuarioActual?.telefono}
-                      </strong>
-
-                    </div>
+                    <span>
+                      Cliente
+                    </span>
 
                   </div>
 
                 </div>
 
-              </div>
+
+                {/* DATOS */}
+
+                <div className="cliente-profile-body">
+
+                  <div className="row g-3">
+
+                    {datos.map(([titulo, valor]) => (
+
+                      <div
+                        className={
+                          titulo === "Dirección"
+                            ? "col-12"
+                            : "col-md-6"
+                        }
+                        key={titulo}
+                      >
+
+                        <div className="profile-field">
+
+                          <small>
+                            {titulo}
+                          </small>
+
+                          <strong>
+                            {valor}
+                          </strong>
+
+                        </div>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+
+                </div>
 
 
-              <div className="cliente-profile-footer">
+                {/* CERRAR SESIÓN */}
 
-                <button
-                  type="button"
-                  className="btn btn-outline-danger"
-                  onClick={cerrarSesion}
-                >
+                <div className="cliente-profile-footer">
 
-                  <i className="fa-solid fa-right-from-bracket me-2"></i>
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger"
+                    onClick={cerrarSesion}
+                  >
 
-                  Cerrar sesión
+                    <i className="fa-solid fa-right-from-bracket me-2"></i>
 
-                </button>
+                    Cerrar sesión
+
+                  </button>
+
+                </div>
 
               </div>
 
             </div>
 
           </div>
+
+        </div>
+
+      </section>
+
+    );
+
+  };
+
+
+  /* =================================
+     CARRITO
+  ================================= */
+
+  const vistaCarrito = () => (
+
+    <section className="cliente-section">
+
+      <div className="container py-5">
+
+        <div className="section-heading">
+
+          <span className="cliente-label">
+            COMPRA
+          </span>
+
+          <h2>
+            Mi carrito
+          </h2>
+
+          <p>
+            Revisa los productos seleccionados.
+          </p>
+
+        </div>
+
+
+        <div className="cliente-content text-center">
+
+          <i className="fa-solid fa-cart-shopping fa-4x text-primary mb-3"></i>
+
+          <h3 className="fw-bold text-primary">
+            Tu carrito está disponible
+          </h3>
+
+          <p className="text-secondary">
+
+            Usa el botón del carrito en la parte superior
+            para revisar tus productos y confirmar tu pedido.
+
+          </p>
+
+
+          <button
+            type="button"
+            className="btn btn-warning fw-bold"
+            onClick={() => {
+
+              const boton =
+                document.querySelector(".cart-button");
+
+              if (boton) {
+                boton.click();
+              }
+
+            }}
+          >
+
+            <i className="fa-solid fa-cart-shopping me-2"></i>
+
+            Abrir carrito
+
+          </button>
 
         </div>
 
@@ -705,42 +704,60 @@ function Cliente({
   );
 
 
-  /* ====================================
-     SELECCIONAR VISTA
-  ==================================== */
-
-  let contenido;
-
+  /* =================================
+     VISTA ACTUAL
+  ================================= */
 
   switch (seccion) {
 
     case "repuestos":
-      contenido = vistaRepuestos();
-      break;
+
+      return (
+        <main className="cliente-page">
+          {vistaRepuestos()}
+        </main>
+      );
+
 
     case "categorias":
-      contenido = vistaCategorias();
-      break;
+
+      return (
+        <main className="cliente-page">
+          {vistaCategorias()}
+        </main>
+      );
+
 
     case "perfil":
-      contenido = vistaPerfil();
-      break;
+
+      return (
+        <main className="cliente-page">
+          {vistaPerfil()}
+        </main>
+      );
+
+
+    case "carrito":
+
+      return (
+        <main className="cliente-page">
+          {vistaCarrito()}
+        </main>
+      );
+
 
     case "inicio":
+
     default:
-      contenido = vistaInicio();
-      break;
+
+      return (
+        <main className="cliente-page">
+          {vistaInicio()}
+        </main>
+      );
 
   }
 
-
-  return (
-    <main className="cliente-page">
-
-      {contenido}
-
-    </main>
-  );
 }
 
 export default Cliente;

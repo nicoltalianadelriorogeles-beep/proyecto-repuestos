@@ -1,3 +1,4 @@
+
 function InfoModal({
   abierto,
   cerrar,
@@ -7,16 +8,30 @@ function InfoModal({
   cambiarPagina
 }) {
 
+
+  // ==========================================
+  // SI EL MODAL ESTÁ CERRADO
+  // ==========================================
+
   if (!abierto) {
     return null;
   }
 
 
+  // ==========================================
+  // NOMBRE COMPLETO
+  // ==========================================
+
   const nombreCompleto = [
+
     usuarioActual?.primerNombre,
+
     usuarioActual?.segundoNombre,
+
     usuarioActual?.primerApellido,
+
     usuarioActual?.segundoApellido
+
   ]
     .filter(Boolean)
     .join(" ");
@@ -24,68 +39,112 @@ function InfoModal({
 
   return (
     <>
+
+
+      {/* ======================================
+          FONDO OSCURO
+      ====================================== */}
+
       <div
+
         className="section-modal-backdrop"
+
         onClick={cerrar}
+
       ></div>
 
 
+      {/* ======================================
+          CONTENEDOR
+      ====================================== */}
+
       <div
+
         className="section-modal-container"
+
         role="dialog"
+
         aria-modal="true"
+
       >
 
         <div className="section-modal">
 
 
-          {/* HEADER */}
+          {/* ==================================
+              HEADER DEL MODAL
+          ================================== */}
 
           <div className="section-modal-header">
 
+
             <div className="d-flex align-items-center gap-3">
+
+
+              {/* ICONO */}
 
               <div className="section-modal-icon">
 
+
                 {tipo === "inicio" && (
+
                   <i className="fa-solid fa-house"></i>
+
                 )}
+
 
                 {tipo === "repuestos" && (
+
                   <i className="fa-solid fa-box-open"></i>
+
                 )}
+
 
                 {tipo === "categorias" && (
+
                   <i className="fa-solid fa-layer-group"></i>
+
                 )}
 
+
                 {tipo === "perfil" && (
+
                   <i className="fa-solid fa-user"></i>
+
                 )}
 
               </div>
 
 
+              {/* TÍTULO */}
+
               <div>
 
                 <small className="section-modal-label">
+
                   PRODUCCIONES ANGEL
+
                 </small>
 
 
                 <h3 className="mb-0 fw-bold text-primary">
 
+
                   {tipo === "inicio" &&
                     "Inicio"}
+
 
                   {tipo === "repuestos" &&
                     "Nuestros repuestos"}
 
+
                   {tipo === "categorias" &&
                     "Categorías"}
 
+
                   {tipo === "perfil" &&
                     "Mi perfil"}
+
 
                 </h3>
 
@@ -94,10 +153,18 @@ function InfoModal({
             </div>
 
 
+            {/* BOTÓN X */}
+
             <button
+
               type="button"
+
               className="section-modal-close"
+
               onClick={cerrar}
+
+              aria-label="Cerrar"
+
             >
 
               <i className="fa-solid fa-xmark"></i>
@@ -107,18 +174,21 @@ function InfoModal({
           </div>
 
 
-          {/* CONTENIDO */}
+          {/* ==================================
+              CUERPO
+          ================================== */}
 
           <div className="section-modal-body">
 
 
-            {/* ==============================
+            {/* ==================================
                 INICIO
-            ============================== */}
+            ================================== */}
 
             {tipo === "inicio" && (
 
               <div className="modal-home-content">
+
 
                 <div className="modal-home-icon">
 
@@ -145,11 +215,14 @@ function InfoModal({
                 <div className="row g-3 mt-3">
 
 
+                  {/* ENVÍOS */}
+
                   <div className="col-md-6">
 
                     <div className="modal-feature">
 
                       <i className="fa-solid fa-truck-fast"></i>
+
 
                       <div>
 
@@ -168,11 +241,14 @@ function InfoModal({
                   </div>
 
 
+                  {/* ATENCIÓN */}
+
                   <div className="col-md-6">
 
                     <div className="modal-feature">
 
                       <i className="fa-solid fa-headset"></i>
+
 
                       <div>
 
@@ -194,9 +270,13 @@ function InfoModal({
 
 
                 <button
+
                   type="button"
+
                   className="btn btn-warning mt-4"
+
                   onClick={cerrar}
+
                 >
 
                   <i className="fa-solid fa-check me-2"></i>
@@ -210,9 +290,9 @@ function InfoModal({
             )}
 
 
-            {/* ==============================
+            {/* ==================================
                 REPUESTOS
-            ============================== */}
+            ================================== */}
 
             {tipo === "repuestos" && (
 
@@ -228,27 +308,38 @@ function InfoModal({
 
                 <div className="row g-3">
 
+
                   {productos.map(
                     (producto) => (
 
                       <div
+
                         className="col-md-6"
+
                         key={producto.id}
+
                       >
 
                         <div className="modal-product">
 
 
+                          {/* ICONO */}
+
                           <div className="modal-product-icon">
 
                             <i
+
                               className={`fa-solid ${producto.icon}`}
+
                             ></i>
 
                           </div>
 
 
+                          {/* INFORMACIÓN */}
+
                           <div className="flex-grow-1">
+
 
                             <small className="text-warning fw-bold">
 
@@ -273,6 +364,8 @@ function InfoModal({
                           </div>
 
 
+                          {/* PRECIO */}
+
                           <strong className="text-primary">
 
                             ${producto.precio}
@@ -293,13 +386,14 @@ function InfoModal({
             )}
 
 
-            {/* ==============================
-                CATEGORIAS
-            ============================== */}
+            {/* ==================================
+                CATEGORÍAS
+            ================================== */}
 
             {tipo === "categorias" && (
 
               <div>
+
 
                 <p className="text-secondary mb-4">
 
@@ -312,9 +406,12 @@ function InfoModal({
                 <div className="row g-4">
 
 
+                  {/* LAVADORAS */}
+
                   <div className="col-md-6">
 
                     <div className="modal-category blue">
+
 
                       <div className="modal-category-icon">
 
@@ -346,9 +443,12 @@ function InfoModal({
                   </div>
 
 
+                  {/* ASPIRADORAS */}
+
                   <div className="col-md-6">
 
                     <div className="modal-category orange">
+
 
                       <div className="modal-category-icon">
 
@@ -386,16 +486,20 @@ function InfoModal({
             )}
 
 
-            {/* ==============================
+            {/* ==================================
                 PERFIL
-            ============================== */}
+            ================================== */}
 
-            {tipo === "perfil" && usuarioActual && (
+            {tipo === "perfil" &&
+              usuarioActual && (
 
               <div>
 
 
+                {/* USUARIO */}
+
                 <div className="profile-modal-user">
+
 
                   <div className="profile-modal-avatar">
 
@@ -424,8 +528,12 @@ function InfoModal({
                 </div>
 
 
+                {/* DATOS */}
+
                 <div className="row g-3 mt-3">
 
+
+                  {/* TIPO DOCUMENTO */}
 
                   <div className="col-md-6">
 
@@ -436,13 +544,17 @@ function InfoModal({
                       </small>
 
                       <strong>
+
                         {usuarioActual.tipoDocumento}
+
                       </strong>
 
                     </div>
 
                   </div>
 
+
+                  {/* DOCUMENTO */}
 
                   <div className="col-md-6">
 
@@ -453,13 +565,17 @@ function InfoModal({
                       </small>
 
                       <strong>
+
                         {usuarioActual.numeroDocumento}
+
                       </strong>
 
                     </div>
 
                   </div>
 
+
+                  {/* TELÉFONO */}
 
                   <div className="col-md-6">
 
@@ -470,13 +586,17 @@ function InfoModal({
                       </small>
 
                       <strong>
+
                         {usuarioActual.telefono}
+
                       </strong>
 
                     </div>
 
                   </div>
 
+
+                  {/* CORREO */}
 
                   <div className="col-md-6">
 
@@ -487,13 +607,17 @@ function InfoModal({
                       </small>
 
                       <strong>
+
                         {usuarioActual.correo}
+
                       </strong>
 
                     </div>
 
                   </div>
 
+
+                  {/* DIRECCIÓN */}
 
                   <div className="col-12">
 
@@ -504,7 +628,9 @@ function InfoModal({
                       </small>
 
                       <strong>
+
                         {usuarioActual.direccion}
+
                       </strong>
 
                     </div>
@@ -520,14 +646,20 @@ function InfoModal({
           </div>
 
 
-          {/* FOOTER */}
+          {/* ==================================
+              FOOTER
+          ================================== */}
 
           <div className="section-modal-footer">
 
             <button
+
               type="button"
+
               className="btn btn-outline-secondary"
+
               onClick={cerrar}
+
             >
 
               Cerrar
@@ -539,8 +671,10 @@ function InfoModal({
         </div>
 
       </div>
+
     </>
   );
 }
+
 
 export default InfoModal;

@@ -4,6 +4,7 @@ import CategoryCard from "../components/CategoryCard";
 function Home({
   busqueda,
   productos,
+  verProducto,
   agregarAlCarrito
 }) {
 
@@ -22,35 +23,31 @@ function Home({
     }
   ];
 
+  /* ================================
+     BÚSQUEDA
+  ================================= */
 
-  const textoBusqueda =
-    (busqueda || "")
-      .trim()
-      .toLowerCase();
+  const textoBusqueda = (busqueda || "")
+    .trim()
+    .toLowerCase();
 
+  const productosFiltrados = productos.filter((producto) => {
 
-  const productosFiltrados =
-    productos.filter(
-      (producto) => {
+    const texto = `
+      ${producto.nombre}
+      ${producto.categoria}
+      ${producto.descripcion}
+    `.toLowerCase();
 
-        const texto =
-          `
-          ${producto.nombre}
-          ${producto.categoria}
-          ${producto.descripcion}
-          `.toLowerCase();
-
-        return texto.includes(
-          textoBusqueda
-        );
-      }
-    );
-
+    return texto.includes(textoBusqueda);
+  });
 
   return (
     <>
 
-      {/* HERO */}
+      {/* =================================
+          HERO
+      ================================= */}
 
       <section className="hero">
 
@@ -58,64 +55,44 @@ function Home({
 
           <div className="row align-items-center g-5">
 
-
             <div className="col-lg-6">
 
               <span className="badge mb-3">
-
                 REPUESTOS PARA ELECTRODOMÉSTICOS
-
               </span>
 
-
               <h1>
-
                 Repuestos para tu
-
                 <span className="text-warning">
-
                   {" "}hogar
-
                 </span>
-
               </h1>
 
-
               <p className="lead">
-
                 Encuentra repuestos y accesorios
                 para lavadoras y aspiradoras.
-
               </p>
 
-
-              <div className="d-flex gap-3 mt-4">
+              <div className="d-flex gap-3 mt-4 flex-wrap">
 
                 <a
                   href="#productos"
-                  className="btn btn-warning"
+                  className="btn btn-warning fw-bold"
                 >
-
                   <i className="fa-solid fa-box-open me-2"></i>
-
                   Ver repuestos
-
                 </a>
-
 
                 <a
                   href="#categorias"
                   className="btn btn-outline-primary"
                 >
-
                   Categorías
-
                 </a>
 
               </div>
 
             </div>
-
 
             <div className="col-lg-6">
 
@@ -127,7 +104,6 @@ function Home({
 
             </div>
 
-
           </div>
 
         </div>
@@ -135,7 +111,9 @@ function Home({
       </section>
 
 
-      {/* CATEGORÍAS */}
+      {/* =================================
+          CATEGORÍAS
+      ================================= */}
 
       <section
         id="categorias"
@@ -150,39 +128,28 @@ function Home({
               CATEGORÍAS
             </span>
 
-
             <h2 className="fw-bold text-primary mt-2">
-
               Repuestos por electrodoméstico
-
             </h2>
 
-
             <p className="text-secondary">
-
               Encuentra rápidamente lo que necesitas.
-
             </p>
 
           </div>
 
-
           <div className="row g-4">
 
-            {categorias.map(
-              (categoria) => (
+            {categorias.map((categoria) => (
 
-                <CategoryCard
-                  key={categoria.nombre}
-                  icon={categoria.icon}
-                  nombre={categoria.nombre}
-                  descripcion={
-                    categoria.descripcion
-                  }
-                />
+              <CategoryCard
+                key={categoria.nombre}
+                icon={categoria.icon}
+                nombre={categoria.nombre}
+                descripcion={categoria.descripcion}
+              />
 
-              )
-            )}
+            ))}
 
           </div>
 
@@ -191,7 +158,9 @@ function Home({
       </section>
 
 
-      {/* PRODUCTOS */}
+      {/* =================================
+          PRODUCTOS
+      ================================= */}
 
       <section
         id="productos"
@@ -200,15 +169,13 @@ function Home({
 
         <div className="container">
 
-
-          <div className="d-flex justify-content-between align-items-end mb-4">
+          <div className="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
 
             <div>
 
               <span className="cliente-label">
                 CATÁLOGO
               </span>
-
 
               <h2 className="fw-bold text-primary mt-2 mb-0">
 
@@ -220,14 +187,10 @@ function Home({
 
             </div>
 
-
             {textoBusqueda && (
 
               <span className="badge bg-primary">
-
-                {productosFiltrados.length}
-                {" "}resultado(s)
-
+                {productosFiltrados.length} resultado(s)
               </span>
 
             )}
@@ -235,39 +198,28 @@ function Home({
           </div>
 
 
+          {/* PRODUCTOS */}
+
           {productosFiltrados.length > 0 ? (
 
             <div className="row g-4">
 
-              {productosFiltrados.map(
-                (producto) => (
+              {productosFiltrados.map((producto) => (
 
-                  <ProductCard
-                    key={producto.id}
-                    producto={producto}
-                    icon={producto.icon}
-                    categoria={
-                      producto.categoria
-                    }
-                    nombre={
-                      producto.nombre
-                    }
-                    descripcion={
-                      producto.descripcion
-                    }
-                    precio={
-                      producto.precio
-                    }
-                    estado={
-                      producto.estado
-                    }
-                    agregarAlCarrito={
-                      agregarAlCarrito
-                    }
-                  />
+                <ProductCard
+                  key={producto.id}
+                  producto={producto}
+                  icon={producto.icon}
+                  categoria={producto.categoria}
+                  nombre={producto.nombre}
+                  descripcion={producto.descripcion}
+                  precio={producto.precio}
+                  estado={producto.estado}
+                  verProducto={verProducto}
+                  agregarAlCarrito={agregarAlCarrito}
+                />
 
-                )
-              )}
+              ))}
 
             </div>
 
@@ -278,16 +230,12 @@ function Home({
               <i className="fa-solid fa-box-open fa-4x text-secondary mb-3"></i>
 
               <h4 className="text-primary fw-bold">
-
                 No encontramos ese repuesto
-
               </h4>
 
               <p className="text-secondary">
-
-                Prueba con bomba, motor,
-                filtro, correa o manguera.
-
+                Prueba con bomba, motor, filtro,
+                correa o manguera.
               </p>
 
             </div>
@@ -299,14 +247,15 @@ function Home({
       </section>
 
 
-      {/* BENEFICIOS */}
+      {/* =================================
+          BENEFICIOS
+      ================================= */}
 
       <section className="py-5 bg-primary text-white">
 
         <div className="container">
 
           <div className="row g-4">
-
 
             <div className="col-md-4">
 
@@ -317,15 +266,11 @@ function Home({
                 <div className="ms-3">
 
                   <h5 className="fw-bold">
-
                     Envíos rápidos
-
                   </h5>
 
                   <small>
-
                     Enviamos a todo Colombia.
-
                   </small>
 
                 </div>
@@ -344,15 +289,11 @@ function Home({
                 <div className="ms-3">
 
                   <h5 className="fw-bold">
-
                     Compra segura
-
                   </h5>
 
                   <small>
-
                     Productos seleccionados.
-
                   </small>
 
                 </div>
@@ -371,15 +312,11 @@ function Home({
                 <div className="ms-3">
 
                   <h5 className="fw-bold">
-
                     Soporte
-
                   </h5>
 
                   <small>
-
                     Atención personalizada.
-
                   </small>
 
                 </div>
@@ -395,7 +332,9 @@ function Home({
       </section>
 
 
-      {/* NOSOTROS */}
+      {/* =================================
+          NOSOTROS
+      ================================= */}
 
       <section
         id="nosotros"
@@ -405,26 +344,18 @@ function Home({
         <div className="container text-center">
 
           <span className="cliente-label">
-
             SOBRE NOSOTROS
-
           </span>
 
-
           <h2 className="fw-bold text-primary mt-2">
-
             Producciones Angel
-
           </h2>
 
-
           <p className="about-text mx-auto">
-
             Somos una tienda especializada en
             repuestos para lavadoras y aspiradoras,
             ofreciendo soluciones para el
             mantenimiento de electrodomésticos.
-
           </p>
 
         </div>
@@ -432,14 +363,15 @@ function Home({
       </section>
 
 
-      {/* FOOTER */}
+      {/* =================================
+          FOOTER
+      ================================= */}
 
       <footer className="bg-dark text-white">
 
         <div className="container py-5">
 
           <div className="row g-4">
-
 
             <div className="col-md-6">
 
@@ -448,19 +380,14 @@ function Home({
                 Producciones
 
                 <span className="text-warning">
-
                   {" "}Angel
-
                 </span>
 
               </h4>
 
-
               <p className="text-secondary">
-
                 Repuestos y accesorios para
                 electrodomésticos.
-
               </p>
 
             </div>
@@ -472,7 +399,6 @@ function Home({
                 Contacto
               </h5>
 
-
               <p>
 
                 <i className="fa-solid fa-phone text-warning me-2"></i>
@@ -480,7 +406,6 @@ function Home({
                 300 000 0000
 
               </p>
-
 
               <p>
 

@@ -1,45 +1,27 @@
 import { useEffect, useState } from "react";
-
 import "./App.css";
 
 import Header from "./partials/Header";
-
 import Home from "./pages/Home";
 import Cliente from "./pages/Cliente";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
-
 import Cart from "./components/Cart";
+import InfoModal from "./components/InfoModal";
 
 import productosIniciales from "./data/productos";
 
 function App() {
-
-  /* ==========================================
-     PRODUCTOS
-  ========================================== */
-
+  // PRODUCTOS
   const [productos, setProductos] = useState(() => {
-
-    const guardados =
-      localStorage.getItem("productos");
-
-    return guardados
-      ? JSON.parse(guardados)
-      : productosIniciales;
-
+    const guardados = localStorage.getItem("productos");
+    return guardados ? JSON.parse(guardados) : productosIniciales;
   });
 
-
-  /* ==========================================
-     USUARIOS
-  ========================================== */
-
+  // USUARIOS
   const [usuarios, setUsuarios] = useState(() => {
-
-    const guardados =
-      localStorage.getItem("usuarios");
+    const guardados = localStorage.getItem("usuarios");
 
     if (guardados) {
       return JSON.parse(guardados);
@@ -58,155 +40,101 @@ function App() {
         correo: "admin@produccionesangel.com",
         password: "admin123",
         telefono: "3000000000",
-        rol: "ADMIN"
-      }
+        rol: "ADMIN",
+      },
     ];
-
   });
 
+  // USUARIO ACTUAL
+  const [usuarioActual, setUsuarioActual] = useState(() => {
+    const guardado = localStorage.getItem("usuarioActual");
+    return guardado ? JSON.parse(guardado) : null;
+  });
 
-  /* ==========================================
-     USUARIO ACTUAL
-  ========================================== */
+  // NAVEGACIÓN
+  const [pagina, setPagina] = useState("home");
+  const [seccionCliente, setSeccionCliente] = useState("inicio");
+  const [seccionAdmin, setSeccionAdmin] = useState("productos");
 
-  const [usuarioActual, setUsuarioActual] =
-    useState(() => {
+  // MODAL
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [tipoModal, setTipoModal] = useState("");
 
-      const guardado =
-        localStorage.getItem("usuarioActual");
+  // BÚSQUEDA
+  const [busqueda, setBusqueda] = useState("");
 
-      return guardado
-        ? JSON.parse(guardado)
-        : null;
+  // LOGIN
+  const [loginForm, setLoginForm] = useState({
+    correo: "",
+    password: "",
+  });
 
-    });
+  // REGISTRO
+  const [registroForm, setRegistroForm] = useState({
+    tipoDocumento: "",
+    numeroDocumento: "",
+    primerNombre: "",
+    segundoNombre: "",
+    primerApellido: "",
+    segundoApellido: "",
+    direccion: "",
+    correo: "",
+    password: "",
+    confirmarPassword: "",
+    telefono: "",
+  });
 
+  // CARRITO
+  const [carrito, setCarrito] = useState([]);
+  const [carritoAbierto, setCarritoAbierto] = useState(false);
 
-  /* ==========================================
-     PÁGINA GENERAL
-  ========================================== */
+  // PEDIDOS
+  const [pedidos, setPedidos] = useState(() => {
+    const guardados = localStorage.getItem("pedidos");
+    return guardados ? JSON.parse(guardados) : [];
+  });
 
-  const [pagina, setPagina] =
-    useState("home");
-
-
-  /* ==========================================
-     SECCIÓN DEL CLIENTE
-  ========================================== */
-
-  const [seccionCliente, setSeccionCliente] =
-    useState("inicio");
-
-
-  /* ==========================================
-     BÚSQUEDA
-  ========================================== */
-
-  const [busqueda, setBusqueda] =
-    useState("");
-
-
-  /* ==========================================
-     LOGIN
-  ========================================== */
-
-  const [loginForm, setLoginForm] =
-    useState({
-      correo: "",
-      password: ""
-    });
-
-
-  /* ==========================================
-     REGISTRO
-  ========================================== */
-
-  const [registroForm, setRegistroForm] =
-    useState({
-      tipoDocumento: "",
-      numeroDocumento: "",
-      primerNombre: "",
-      segundoNombre: "",
-      primerApellido: "",
-      segundoApellido: "",
-      direccion: "",
-      correo: "",
-      password: "",
-      confirmarPassword: "",
-      telefono: ""
-    });
-
-
-  /* ==========================================
-     CARRITO
-  ========================================== */
-
-  const [carrito, setCarrito] =
-    useState([]);
-
-  const [carritoAbierto, setCarritoAbierto] =
-    useState(false);
-
-
-  /* ==========================================
-     GUARDAR PRODUCTOS
-  ========================================== */
-
+  // GUARDAR PRODUCTOS
   useEffect(() => {
-
-    localStorage.setItem(
-      "productos",
-      JSON.stringify(productos)
-    );
-
+    localStorage.setItem("productos", JSON.stringify(productos));
   }, [productos]);
 
-
-  /* ==========================================
-     GUARDAR USUARIOS
-  ========================================== */
-
+  // GUARDAR USUARIOS
   useEffect(() => {
-
-    localStorage.setItem(
-      "usuarios",
-      JSON.stringify(usuarios)
-    );
-
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
   }, [usuarios]);
 
-
-  /* ==========================================
-     GUARDAR SESIÓN
-  ========================================== */
-
+  // GUARDAR USUARIO ACTUAL
   useEffect(() => {
-
     if (usuarioActual) {
-
       localStorage.setItem(
         "usuarioActual",
         JSON.stringify(usuarioActual)
       );
-
     } else {
-
-      localStorage.removeItem(
-        "usuarioActual"
-      );
-
+      localStorage.removeItem("usuarioActual");
     }
-
   }, [usuarioActual]);
 
+  // GUARDAR PEDIDOS
+  useEffect(() => {
+    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  }, [pedidos]);
 
-  /* ==========================================
-     REGISTRO
-  ========================================== */
+  // MODAL
+  const abrirModal = (tipo) => {
+    setTipoModal(tipo);
+    setModalAbierto(true);
+  };
 
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setTipoModal("");
+  };
+
+  // REGISTRO
   const registrarUsuario = () => {
-
-    const camposObligatorios = [
+    const campos = [
       registroForm.tipoDocumento,
       registroForm.numeroDocumento,
       registroForm.primerNombre,
@@ -214,122 +142,70 @@ function App() {
       registroForm.direccion,
       registroForm.correo,
       registroForm.password,
-      registroForm.telefono
+      registroForm.telefono,
     ];
 
-
-    const campoVacio =
-      camposObligatorios.some(
-        (campo) => !campo.trim()
-      );
-
-
-    if (campoVacio) {
-
-      alert(
-        "Completa todos los campos obligatorios."
-      );
-
+    if (campos.some((campo) => !campo.trim())) {
+      alert("Completa todos los campos obligatorios.");
       return;
     }
-
 
     if (
       registroForm.password !==
       registroForm.confirmarPassword
     ) {
-
-      alert(
-        "Las contraseñas no coinciden."
-      );
-
+      alert("Las contraseñas no coinciden.");
       return;
     }
 
-
-    if (
-      registroForm.password.length < 6
-    ) {
-
-      alert(
-        "La contraseña debe tener mínimo 6 caracteres."
-      );
-
+    if (registroForm.password.length < 6) {
+      alert("La contraseña debe tener mínimo 6 caracteres.");
       return;
     }
 
-
-    const correoExiste =
-      usuarios.some(
-        (usuario) =>
-          usuario.correo.toLowerCase() ===
-          registroForm.correo.toLowerCase()
-      );
-
+    const correoExiste = usuarios.some(
+      (usuario) =>
+        usuario.correo.toLowerCase() ===
+        registroForm.correo.toLowerCase()
+    );
 
     if (correoExiste) {
-
-      alert(
-        "Este correo ya está registrado."
-      );
-
+      alert("Este correo ya está registrado.");
       return;
     }
 
-
-    const documentoExiste =
-      usuarios.some(
-        (usuario) =>
-          usuario.numeroDocumento ===
-          registroForm.numeroDocumento
-      );
-
+    const documentoExiste = usuarios.some(
+      (usuario) =>
+        usuario.numeroDocumento ===
+        registroForm.numeroDocumento
+    );
 
     if (documentoExiste) {
-
       alert(
         "Este número de documento ya está registrado."
       );
-
       return;
     }
 
-
     const nuevoUsuario = {
       id: Date.now(),
-      tipoDocumento:
-        registroForm.tipoDocumento,
-      numeroDocumento:
-        registroForm.numeroDocumento,
-      primerNombre:
-        registroForm.primerNombre,
-      segundoNombre:
-        registroForm.segundoNombre,
-      primerApellido:
-        registroForm.primerApellido,
-      segundoApellido:
-        registroForm.segundoApellido,
-      direccion:
-        registroForm.direccion,
-      correo:
-        registroForm.correo,
-      password:
-        registroForm.password,
-      telefono:
-        registroForm.telefono,
-
-      // Todo registro público es CLIENTE
-      rol: "CLIENTE"
+      tipoDocumento: registroForm.tipoDocumento,
+      numeroDocumento: registroForm.numeroDocumento,
+      primerNombre: registroForm.primerNombre,
+      segundoNombre: registroForm.segundoNombre,
+      primerApellido: registroForm.primerApellido,
+      segundoApellido: registroForm.segundoApellido,
+      direccion: registroForm.direccion,
+      correo: registroForm.correo,
+      password: registroForm.password,
+      telefono: registroForm.telefono,
+      rol: "CLIENTE",
     };
 
-
-    setUsuarios(
-      (usuariosActuales) => [
-        ...usuariosActuales,
-        nuevoUsuario
-      ]
-    );
-
+    setUsuarios((actuales) => [
+      ...actuales,
+      nuevoUsuario,
+    ]);
 
     setRegistroForm({
       tipoDocumento: "",
@@ -342,590 +218,407 @@ function App() {
       correo: "",
       password: "",
       confirmarPassword: "",
-      telefono: ""
+      telefono: "",
     });
-
 
     alert(
       "Registro exitoso. Ahora puedes iniciar sesión."
     );
 
-
     setPagina("login");
-
   };
 
-
-  /* ==========================================
-     LOGIN
-  ========================================== */
-
+  // LOGIN
   const iniciarSesion = () => {
-
     if (
       !loginForm.correo.trim() ||
       !loginForm.password.trim()
     ) {
-
-      alert(
-        "Ingresa tu correo y contraseña."
-      );
-
+      alert("Ingresa tu correo y contraseña.");
       return;
     }
 
-
-    const usuario =
-      usuarios.find(
-        (item) =>
-          item.correo.toLowerCase() ===
-            loginForm.correo.toLowerCase() &&
-          item.password ===
-            loginForm.password
-      );
-
+    const usuario = usuarios.find(
+      (item) =>
+        item.correo.toLowerCase() ===
+          loginForm.correo.toLowerCase() &&
+        item.password === loginForm.password
+    );
 
     if (!usuario) {
-
-      alert(
-        "Correo o contraseña incorrectos."
-      );
-
+      alert("Correo o contraseña incorrectos.");
       return;
     }
-
 
     setUsuarioActual(usuario);
 
-
     setLoginForm({
       correo: "",
-      password: ""
+      password: "",
     });
-
-
-    if (usuario.rol === "ADMIN") {
-
-      setPagina("admin");
-
-    } else {
-
-      setSeccionCliente("inicio");
-
-      setPagina("cliente");
-
-    }
-
-  };
-
-
-  /* ==========================================
-     CERRAR SESIÓN
-  ========================================== */
-
-  const cerrarSesion = () => {
-
-    setUsuarioActual(null);
-
-    setPagina("home");
-
-    setSeccionCliente("inicio");
-
-    setBusqueda("");
-
-    setCarrito([]);
 
     setCarritoAbierto(false);
 
+    if (usuario.rol === "ADMIN") {
+      setSeccionAdmin("productos");
+      setPagina("admin");
+    } else {
+      setSeccionCliente("inicio");
+      setPagina("cliente");
+    }
   };
 
+  // CERRAR SESIÓN
+  const cerrarSesion = () => {
+    setUsuarioActual(null);
+    setPagina("home");
+    setSeccionCliente("inicio");
+    setSeccionAdmin("productos");
+    setBusqueda("");
+    setCarrito([]);
+    setCarritoAbierto(false);
+    cerrarModal();
+  };
 
-  /* ==========================================
-     CAMBIAR SECCIÓN CLIENTE
-  ========================================== */
-
+  // SECCIÓN CLIENTE
   const cambiarSeccionCliente = (seccion) => {
-
     setSeccionCliente(seccion);
-
     setPagina("cliente");
-
   };
 
+  // SECCIÓN ADMIN
+  const cambiarSeccionAdmin = (seccion) => {
+    setSeccionAdmin(seccion);
+    setPagina("admin");
+  };
 
-  /* ==========================================
-     CRUD PRODUCTOS
-  ========================================== */
-
+  // PRODUCTOS
   const agregarProducto = (nuevoProducto) => {
-
-    setProductos(
-      (productosActuales) => [
-        ...productosActuales,
-        nuevoProducto
-      ]
-    );
-
+    setProductos((actuales) => [
+      ...actuales,
+      nuevoProducto,
+    ]);
   };
 
-
-  const editarProducto = (
-    productoActualizado
-  ) => {
-
-    setProductos(
-      (productosActuales) =>
-        productosActuales.map(
-          (producto) =>
-            producto.id ===
-            productoActualizado.id
-              ? productoActualizado
-              : producto
-        )
+  const editarProducto = (productoActualizado) => {
+    setProductos((actuales) =>
+      actuales.map((producto) =>
+        producto.id === productoActualizado.id
+          ? productoActualizado
+          : producto
+      )
     );
-
   };
-
 
   const eliminarProducto = (id) => {
-
-    setProductos(
-      (productosActuales) =>
-        productosActuales.filter(
-          (producto) =>
-            producto.id !== id
-        )
+    setProductos((actuales) =>
+      actuales.filter((producto) => producto.id !== id)
     );
 
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.filter(
-          (producto) =>
-            producto.id !== id
-        )
+    setCarrito((actual) =>
+      actual.filter((producto) => producto.id !== id)
     );
-
   };
 
-
-  /* ==========================================
-     CRUD USUARIOS
-  ========================================== */
-
+  // USUARIOS
   const agregarUsuario = (nuevoUsuario) => {
-
-    setUsuarios(
-      (usuariosActuales) => [
-        ...usuariosActuales,
-        nuevoUsuario
-      ]
-    );
-
+    setUsuarios((actuales) => [
+      ...actuales,
+      nuevoUsuario,
+    ]);
   };
 
-
-  const editarUsuario = (
-    usuarioActualizado
-  ) => {
-
-    setUsuarios(
-      (usuariosActuales) =>
-        usuariosActuales.map(
-          (usuario) =>
-            usuario.id ===
-            usuarioActualizado.id
-              ? usuarioActualizado
-              : usuario
-        )
+  const editarUsuario = (usuarioActualizado) => {
+    setUsuarios((actuales) =>
+      actuales.map((usuario) =>
+        usuario.id === usuarioActualizado.id
+          ? usuarioActualizado
+          : usuario
+      )
     );
 
-
-    if (
-      usuarioActual?.id ===
-      usuarioActualizado.id
-    ) {
-
-      setUsuarioActual(
-        usuarioActualizado
-      );
-
+    if (usuarioActual?.id === usuarioActualizado.id) {
+      setUsuarioActual(usuarioActualizado);
     }
-
   };
-
 
   const eliminarUsuario = (id) => {
-
-    if (
-      usuarioActual?.id === id
-    ) {
-
-      alert(
-        "No puedes eliminar tu propia cuenta."
-      );
-
+    if (usuarioActual?.id === id) {
+      alert("No puedes eliminar tu propia cuenta.");
       return;
     }
 
-
-    setUsuarios(
-      (usuariosActuales) =>
-        usuariosActuales.filter(
-          (usuario) =>
-            usuario.id !== id
-        )
+    setUsuarios((actuales) =>
+      actuales.filter((usuario) => usuario.id !== id)
     );
-
   };
 
-
-  /* ==========================================
-     CARRITO
-  ========================================== */
-
+  // CARRITO
   const agregarAlCarrito = (producto) => {
+    if (usuarioActual?.rol !== "CLIENTE") {
+      alert(
+        "Debes iniciar sesión como cliente para comprar."
+      );
+      return;
+    }
 
-    setCarrito(
-      (carritoActual) => {
+    setCarrito((actual) => {
+      const existe = actual.find(
+        (item) => item.id === producto.id
+      );
 
-        const existe =
-          carritoActual.find(
-            (item) =>
-              item.id === producto.id
-          );
-
-
-        if (existe) {
-
-          return carritoActual.map(
-            (item) =>
-              item.id === producto.id
-                ? {
-                    ...item,
-                    cantidad:
-                      item.cantidad + 1
-                  }
-                : item
-          );
-
-        }
-
-
-        return [
-          ...carritoActual,
-          {
-            ...producto,
-            cantidad: 1
-          }
-        ];
-
+      if (existe) {
+        return actual.map((item) =>
+          item.id === producto.id
+            ? {
+                ...item,
+                cantidad: item.cantidad + 1,
+              }
+            : item
+        );
       }
-    );
 
+      return [
+        ...actual,
+        {
+          ...producto,
+          cantidad: 1,
+        },
+      ];
+    });
 
-    setCarritoAbierto(true);
-
+    // IMPORTANTE:
+    // No abrimos el carrito automáticamente.
   };
-
 
   const aumentarCantidad = (id) => {
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.map(
-          (producto) =>
-            producto.id === id
-              ? {
-                  ...producto,
-                  cantidad:
-                    producto.cantidad + 1
-                }
-              : producto
-        )
+    setCarrito((actual) =>
+      actual.map((producto) =>
+        producto.id === id
+          ? {
+              ...producto,
+              cantidad: producto.cantidad + 1,
+            }
+          : producto
+      )
     );
-
   };
-
 
   const disminuirCantidad = (id) => {
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual
-          .map(
-            (producto) =>
-              producto.id === id
-                ? {
-                    ...producto,
-                    cantidad:
-                      producto.cantidad - 1
-                  }
-                : producto
-          )
-          .filter(
-            (producto) =>
-              producto.cantidad > 0
-          )
-    );
-
-  };
-
-
-  const eliminarDelCarrito = (id) => {
-
-    setCarrito(
-      (carritoActual) =>
-        carritoActual.filter(
-          (producto) =>
-            producto.id !== id
+    setCarrito((actual) =>
+      actual
+        .map((producto) =>
+          producto.id === id
+            ? {
+                ...producto,
+                cantidad: producto.cantidad - 1,
+              }
+            : producto
+        )
+        .filter(
+          (producto) => producto.cantidad > 0
         )
     );
-
   };
 
+  const eliminarDelCarrito = (id) => {
+    setCarrito((actual) =>
+      actual.filter(
+        (producto) => producto.id !== id
+      )
+    );
+  };
 
   const vaciarCarrito = () => {
-
     setCarrito([]);
-
   };
 
+  // PEDIDOS
+  const finalizarCompra = () => {
+    if (!carrito.length) {
+      alert("El carrito está vacío.");
+      return;
+    }
 
-  const cantidadCarrito =
-    carrito.reduce(
-      (total, producto) =>
-        total + producto.cantidad,
+    const total = carrito.reduce(
+      (suma, producto) =>
+        suma +
+        Number(producto.precio) *
+          producto.cantidad,
       0
     );
 
+    const nuevoPedido = {
+      id: Date.now(),
+      usuarioId: usuarioActual.id,
+      cliente: `${usuarioActual.primerNombre} ${usuarioActual.primerApellido}`,
+      productos: carrito,
+      total,
+      estado: "PENDIENTE",
+      fecha: new Date().toLocaleString(),
+    };
+
+    setPedidos((actuales) => [
+      ...actuales,
+      nuevoPedido,
+    ]);
+
+    setCarrito([]);
+    setCarritoAbierto(false);
+
+    alert(
+      "Pedido realizado correctamente. El administrador lo verá como pendiente."
+    );
+  };
+
+  const cambiarEstadoPedido = (id, estado) => {
+    setPedidos((actuales) =>
+      actuales.map((pedido) =>
+        pedido.id === id
+          ? {
+              ...pedido,
+              estado,
+            }
+          : pedido
+      )
+    );
+  };
+
+  const cantidadCarrito = carrito.reduce(
+    (total, producto) =>
+      total + producto.cantidad,
+    0
+  );
 
   return (
     <>
       <Header
-
         busqueda={busqueda}
-
         setBusqueda={setBusqueda}
-
-        cantidadCarrito={
-          cantidadCarrito
-        }
-
-        abrirCarrito={() =>
-          setCarritoAbierto(true)
-        }
-
-        usuarioActual={
-          usuarioActual
-        }
-
-        cambiarPagina={
-          setPagina
-        }
-
+        cantidadCarrito={cantidadCarrito}
+        abrirCarrito={() => {
+          if (usuarioActual?.rol === "CLIENTE") {
+            setCarritoAbierto(true);
+          }
+        }}
+        usuarioActual={usuarioActual}
+        cambiarPagina={setPagina}
         cambiarSeccionCliente={
           cambiarSeccionCliente
         }
-
-        cerrarSesion={
-          cerrarSesion
+        cambiarSeccionAdmin={
+          cambiarSeccionAdmin
         }
-
+        seccionCliente={seccionCliente}
+        seccionAdmin={seccionAdmin}
+        cerrarSesion={cerrarSesion}
+        abrirModal={abrirModal}
       />
 
-
-      {/* ================================
-          PÁGINA PÚBLICA
-      ================================= */}
-
       {pagina === "home" && (
-
         <Home
           busqueda={busqueda}
           productos={productos}
-          agregarAlCarrito={
-            agregarAlCarrito
-          }
         />
-
       )}
 
-
-      {/* ================================
-          LOGIN
-      ================================= */}
-
       {pagina === "login" && (
-
         <Login
           formulario={loginForm}
-          setFormulario={
-            setLoginForm
-          }
-          iniciarSesion={
-            iniciarSesion
-          }
+          setFormulario={setLoginForm}
+          iniciarSesion={iniciarSesion}
           irRegistro={() =>
             setPagina("registro")
           }
         />
-
       )}
 
-
-      {/* ================================
-          REGISTRO
-      ================================= */}
-
       {pagina === "registro" && (
-
         <Registro
-          formulario={
-            registroForm
-          }
-          setFormulario={
-            setRegistroForm
-          }
-          registrarUsuario={
-            registrarUsuario
-          }
+          formulario={registroForm}
+          setFormulario={setRegistroForm}
+          registrarUsuario={registrarUsuario}
           irLogin={() =>
             setPagina("login")
           }
         />
-
       )}
-
-
-      {/* ================================
-          CLIENTE
-      ================================= */}
 
       {pagina === "cliente" &&
         usuarioActual?.rol === "CLIENTE" && (
-
           <Cliente
-
-            usuarioActual={
-              usuarioActual
-            }
-
-            productos={
-              productos
-            }
-
-            busqueda={
-              busqueda
-            }
-
-            seccion={
-              seccionCliente
-            }
-
+            usuarioActual={usuarioActual}
+            productos={productos}
+            busqueda={busqueda}
+            seccion={seccionCliente}
             cambiarSeccion={
               cambiarSeccionCliente
             }
-
             agregarAlCarrito={
               agregarAlCarrito
             }
-
-            cerrarSesion={
-              cerrarSesion
-            }
-
+            cerrarSesion={cerrarSesion}
           />
-
-      )}
-
-
-      {/* ================================
-          ADMIN
-      ================================= */}
+        )}
 
       {pagina === "admin" &&
         usuarioActual?.rol === "ADMIN" && (
-
           <Admin
-
-            productos={
-              productos
+            productos={productos}
+            agregarProducto={agregarProducto}
+            editarProducto={editarProducto}
+            eliminarProducto={eliminarProducto}
+            usuarios={usuarios}
+            usuarioActual={usuarioActual}
+            agregarUsuario={agregarUsuario}
+            editarUsuario={editarUsuario}
+            eliminarUsuario={eliminarUsuario}
+            pedidos={pedidos}
+            cambiarEstadoPedido={
+              cambiarEstadoPedido
             }
-
-            agregarProducto={
-              agregarProducto
+            seccion={seccionAdmin}
+            cambiarSeccion={
+              cambiarSeccionAdmin
             }
-
-            editarProducto={
-              editarProducto
-            }
-
-            eliminarProducto={
-              eliminarProducto
-            }
-
-            usuarios={
-              usuarios
-            }
-
-            usuarioActual={
-              usuarioActual
-            }
-
-            agregarUsuario={
-              agregarUsuario
-            }
-
-            editarUsuario={
-              editarUsuario
-            }
-
-            eliminarUsuario={
-              eliminarUsuario
-            }
-
           />
+        )}
 
-      )}
+      {/* CARRITO
+          SOLO SE RENDERIZA CUANDO ESTÁ ABIERTO */}
+      {usuarioActual?.rol === "CLIENTE" &&
+        carritoAbierto && (
+          <Cart
+            carrito={carrito}
+            abierto={carritoAbierto}
+            cerrarCarrito={() =>
+              setCarritoAbierto(false)
+            }
+            aumentarCantidad={
+              aumentarCantidad
+            }
+            disminuirCantidad={
+              disminuirCantidad
+            }
+            eliminarProducto={
+              eliminarDelCarrito
+            }
+            vaciarCarrito={
+              vaciarCarrito
+            }
+            finalizarCompra={
+              finalizarCompra
+            }
+          />
+        )}
 
-
-      {/* ================================
-          CARRITO
-      ================================= */}
-
-      <Cart
-
-        carrito={
-          carrito
-        }
-
-        abierto={
-          carritoAbierto
-        }
-
-        cerrarCarrito={() =>
-          setCarritoAbierto(false)
-        }
-
-        aumentarCantidad={
-          aumentarCantidad
-        }
-
-        disminuirCantidad={
-          disminuirCantidad
-        }
-
-        eliminarProducto={
-          eliminarDelCarrito
-        }
-
-        vaciarCarrito={
-          vaciarCarrito
-        }
-
+      <InfoModal
+        abierto={modalAbierto}
+        cerrar={cerrarModal}
+        tipo={tipoModal}
+        usuarioActual={usuarioActual}
+        productos={productos}
       />
-
     </>
   );
 }

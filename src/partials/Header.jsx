@@ -1,3 +1,4 @@
+
 function Header({
   busqueda,
   setBusqueda,
@@ -5,25 +6,61 @@ function Header({
   abrirCarrito,
   usuarioActual,
   cambiarPagina,
-  cerrarSesion
+  cambiarSeccionCliente,
+  cambiarSeccionAdmin,
+  seccionCliente,
+  seccionAdmin,
+  cerrarSesion,
+  abrirModal
 }) {
+
+  const cliente =
+    usuarioActual?.rol === "CLIENTE";
+
+  const admin =
+    usuarioActual?.rol === "ADMIN";
+
+
+  const irCliente = (seccion) => {
+
+    cambiarSeccionCliente(seccion);
+
+  };
+
+
+  const irAdmin = (seccion) => {
+
+    cambiarSeccionAdmin(seccion);
+
+  };
+
 
   return (
     <>
-      {/* BARRA SUPERIOR */}
 
-      <div className="bg-dark text-white py-2 small">
+      {/* ==================================
+          BARRA SUPERIOR
+      ================================== */}
 
-        <div className="container d-flex justify-content-between">
+      <div className="top-bar">
+
+        <div className="container top-bar-content">
 
           <span>
-            <i className="fa-solid fa-truck me-2 text-warning"></i>
+
+            <i className="fa-solid fa-truck"></i>
+
             Envíos a todo Colombia
+
           </span>
 
+
           <span>
-            <i className="fa-solid fa-phone me-2 text-warning"></i>
+
+            <i className="fa-solid fa-phone"></i>
+
             Atención: 300 000 0000
+
           </span>
 
         </div>
@@ -31,225 +68,446 @@ function Header({
       </div>
 
 
-      {/* HEADER */}
+      {/* ==================================
+          HEADER PRINCIPAL
+      ================================== */}
 
-      <header className="bg-white shadow-sm">
+      <header className="main-header">
 
-        <div className="container py-3">
-
-          <div className="d-flex align-items-center justify-content-between gap-4">
+        <div className="container header-container">
 
 
-            {/* LOGO */}
+          {/* LOGO */}
 
-            <div
-              className="d-flex align-items-center"
-              role="button"
-              onClick={() =>
-                cambiarPagina(
-                  usuarioActual?.rol === "CLIENTE"
-                    ? "cliente"
-                    : "home"
-                )
+          <button
+
+            type="button"
+
+            className="header-logo-button"
+
+            onClick={() => {
+
+              if (cliente) {
+
+                abrirModal("inicio");
+
+              } else if (admin) {
+
+                irAdmin("productos");
+
+              } else {
+
+                cambiarPagina("home");
+
               }
-            >
 
-              <div className="bg-warning text-primary rounded-3 p-3 me-2">
+            }}
 
-                <i className="fa-solid fa-screwdriver-wrench"></i>
+          >
 
-              </div>
+            <div className="header-logo-icon">
 
-              <div>
-
-                <h4 className="fw-bold text-primary mb-0">
-
-                  Producciones{" "}
-
-                  <span className="text-warning">
-                    Angel
-                  </span>
-
-                </h4>
-
-                <small className="text-secondary">
-                  REPUESTOS PARA ELECTRODOMÉSTICOS
-                </small>
-
-              </div>
+              <i className="fa-solid fa-screwdriver-wrench"></i>
 
             </div>
 
 
-            {/* BUSCADOR */}
+            <div className="header-logo-text">
 
-            <div className="input-group w-50">
+              <h4>
 
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar repuestos..."
-                value={busqueda}
-                onChange={(e) =>
-                  setBusqueda(e.target.value)
-                }
-              />
+                Producciones <span>Angel</span>
+
+              </h4>
+
+
+              <small>
+
+                REPUESTOS PARA ELECTRODOMÉSTICOS
+
+              </small>
+
+            </div>
+
+          </button>
+
+
+          {/* ==================================
+              BUSCADOR
+          ================================== */}
+
+          {!admin && (
+          <div className="header-search">
+
+            <input
+
+              type="text"
+
+              placeholder="Buscar repuestos..."
+
+              value={busqueda}
+
+              onChange={(e) =>
+                setBusqueda(e.target.value)
+              }
+
+            />
+
+
+            <button type="button">
+
+              <i className="fa-solid fa-magnifying-glass"></i>
+
+            </button>
+
+          </div>
+          )}
+
+
+          {/* ==================================
+              ACCIONES
+          ================================== */}
+
+          <div className="header-actions">
+
+
+            {!usuarioActual ? (
+
+              <>
+
+                {/* INGRESAR */}
+
+                <button
+
+                  type="button"
+
+                  className="btn-header login"
+
+                  onClick={() =>
+                    cambiarPagina("login")
+                  }
+
+                >
+
+                  <i className="fa-solid fa-right-to-bracket"></i>
+
+                  Ingresar
+
+                </button>
+
+
+                {/* REGISTRARSE */}
+
+                <button
+
+                  type="button"
+
+                  className="btn-header register"
+
+                  onClick={() =>
+                    cambiarPagina("registro")
+                  }
+
+                >
+
+                  <i className="fa-solid fa-user-plus"></i>
+
+                  Registrarse
+
+                </button>
+
+              </>
+
+            ) : (
+
+              <div className="user-menu">
+
+
+                {/* NOMBRE / PERFIL */}
+
+                <button
+
+                  type="button"
+
+                  className="user-name"
+
+                  onClick={() => {
+
+                    if (cliente) {
+
+                      abrirModal("perfil");
+
+                    }
+
+                  }}
+
+                >
+
+                  <i className="fa-solid fa-user"></i>
+
+                  {usuarioActual.primerNombre}
+
+                </button>
+
+
+                {/* CERRAR SESIÓN */}
+
+                <button
+
+                  type="button"
+
+                  className="btn-header logout"
+
+                  onClick={
+                    cerrarSesion
+                  }
+
+                >
+
+                  <i className="fa-solid fa-right-from-bracket"></i>
+
+                  Salir
+
+                </button>
+
+              </div>
+
+            )}
+
+
+            {/* ==================================
+                CARRITO
+            ================================== */}
+
+            {cliente && (
 
               <button
+
                 type="button"
-                className="btn btn-warning"
+
+                className="cart-button"
+
+                onClick={() => {
+
+                  irCliente("carrito");
+
+                  abrirCarrito();
+
+                }}
+
               >
 
-                <i className="fa-solid fa-magnifying-glass"></i>
+                <i className="fa-solid fa-cart-shopping"></i>
+
+
+                {cantidadCarrito > 0 && (
+
+                  <span className="cart-count">
+
+                    {cantidadCarrito}
+
+                  </span>
+
+                )}
 
               </button>
 
-            </div>
+            )}
+
+          </div>
+
+        </div>
+
+      </header>
 
 
-            {/* ACCIONES */}
+      {/* ==================================
+          MENÚ DE NAVEGACIÓN
+      ================================== */}
 
-            <div className="d-flex align-items-center gap-2">
+      <nav className="main-nav">
 
-
-              {!usuarioActual ? (
-
-                <>
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={() =>
-                      cambiarPagina("login")
-                    }
-                  >
-
-                    <i className="fa-solid fa-right-to-bracket me-1"></i>
-
-                    Ingresar
-
-                  </button>
+        <div className="container nav-container">
 
 
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    onClick={() =>
-                      cambiarPagina("registro")
-                    }
-                  >
+          {/* ==================================
+              MENÚ CLIENTE
+          ================================== */}
 
-                    <i className="fa-solid fa-user-plus me-1"></i>
+          {cliente && (
 
-                    Registrarse
-
-                  </button>
-
-                </>
-
-              ) : (
-
-                <div className="dropdown">
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                  >
-
-                    <i className="fa-solid fa-user me-2"></i>
-
-                    {usuarioActual.primerNombre}
-
-                  </button>
+            <div className="nav-links">
 
 
-                  <ul className="dropdown-menu dropdown-menu-end">
+              {/* INICIO */}
+
+              <button
+
+                type="button"
+
+                className={`nav-link ${
+                  seccionCliente ===
+                  "inicio"
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() => {
+
+                  cambiarSeccionCliente(
+                    "inicio"
+                  );
+
+                  abrirModal(
+                    "inicio"
+                  );
+
+                }}
+
+              >
+
+                <i className="fa-solid fa-house"></i>
+
+                Inicio
+
+              </button>
 
 
-                    {usuarioActual.rol === "CLIENTE" && (
+              {/* REPUESTOS */}
 
-                      <li>
+              <button
 
-                        <button
-                          type="button"
-                          className="dropdown-item"
-                          onClick={() =>
-                            cambiarPagina("cliente")
-                          }
-                        >
+                type="button"
 
-                          <i className="fa-solid fa-house-user me-2"></i>
+                className={`nav-link ${
+                  seccionCliente ===
+                  "repuestos"
+                    ? "active"
+                    : ""
+                }`}
 
-                          Mi espacio
+                onClick={() => {
 
-                        </button>
+                  cambiarSeccionCliente(
+                    "repuestos"
+                  );
 
-                      </li>
+                  abrirModal(
+                    "repuestos"
+                  );
 
-                    )}
+                }}
 
+              >
 
-                    {usuarioActual.rol === "ADMIN" && (
+                <i className="fa-solid fa-gears"></i>
 
-                      <li>
+                Repuestos
 
-                        <button
-                          type="button"
-                          className="dropdown-item"
-                          onClick={() =>
-                            cambiarPagina("admin")
-                          }
-                        >
-
-                          <i className="fa-solid fa-user-shield me-2"></i>
-
-                          Administración
-
-                        </button>
-
-                      </li>
-
-                    )}
+              </button>
 
 
-                    <li>
+              {/* CATEGORÍAS */}
 
-                      <button
-                        type="button"
-                        className="dropdown-item text-danger"
-                        onClick={cerrarSesion}
-                      >
+              <button
 
-                        <i className="fa-solid fa-right-from-bracket me-2"></i>
+                type="button"
 
-                        Cerrar sesión
+                className={`nav-link ${
+                  seccionCliente ===
+                  "categorias"
+                    ? "active"
+                    : ""
+                }`}
 
-                      </button>
+                onClick={() => {
 
-                    </li>
+                  cambiarSeccionCliente(
+                    "categorias"
+                  );
 
-                  </ul>
+                  abrirModal(
+                    "categorias"
+                  );
 
-                </div>
+                }}
 
-              )}
+              >
+
+                <i className="fa-solid fa-layer-group"></i>
+
+                Categorías
+
+              </button>
+
+
+              {/* MI PERFIL */}
+
+              <button
+
+                type="button"
+
+                className={`nav-link ${
+                  seccionCliente ===
+                  "perfil"
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() => {
+
+                  cambiarSeccionCliente(
+                    "perfil"
+                  );
+
+                  abrirModal(
+                    "perfil"
+                  );
+
+                }}
+
+              >
+
+                <i className="fa-solid fa-user"></i>
+
+                Mi perfil
+
+              </button>
 
 
               {/* CARRITO */}
 
               <button
+
                 type="button"
-                className="btn btn-primary position-relative cart-button"
-                onClick={abrirCarrito}
-                title="Ver carrito"
+
+                className={`nav-link ${
+                  seccionCliente ===
+                  "carrito"
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() => {
+
+                  cambiarSeccionCliente(
+                    "carrito"
+                  );
+
+                  abrirCarrito();
+
+                }}
+
               >
 
                 <i className="fa-solid fa-cart-shopping"></i>
 
+                Carrito
+
+
                 {cantidadCarrito > 0 && (
 
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                  <span className="nav-cart-count">
 
                     {cantidadCarrito}
 
@@ -261,93 +519,189 @@ function Header({
 
             </div>
 
-          </div>
-
-        </div>
-
-      </header>
+          )}
 
 
-      {/* NAVEGACIÓN */}
+          {/* ==================================
+              MENÚ ADMINISTRADOR
+          ================================== */}
 
-      <nav className="navbar bg-primary navbar-dark">
+          {admin && (
 
-        <div className="container d-flex align-items-center">
+            <div className="nav-links">
 
-          <button
-            type="button"
-            className="btn btn-warning fw-bold"
-          >
-
-            <i className="fa-solid fa-bars me-2"></i>
-
-            Categorías
-
-          </button>
-
-
-          <div className="d-flex gap-4 ms-4">
-
-            <button
-              type="button"
-              className="nav-link text-white bg-transparent border-0"
-              onClick={() =>
-                cambiarPagina(
-                  usuarioActual?.rol === "CLIENTE"
-                    ? "cliente"
-                    : "home"
-                )
-              }
-            >
-              Inicio
-            </button>
-
-
-            <a
-              href="#catalogo-cliente"
-              className="nav-link text-white"
-            >
-              Repuestos
-            </a>
-
-
-            <a
-              href="#categorias"
-              className="nav-link text-white"
-            >
-              Categorías
-            </a>
-
-
-            <a
-              href="#perfil-cliente"
-              className="nav-link text-white"
-            >
-              Mi perfil
-            </a>
-
-
-            {!usuarioActual && (
-
-              <a
-                href="#nosotros"
-                className="nav-link text-white"
+              <button
+                type="button"
+                className={`nav-link ${
+                  seccionAdmin === "productos"
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() => irAdmin("productos")}
               >
+                <i className="fa-solid fa-boxes-stacked"></i>
+                Gestionar productos
+              </button>
+
+              <button
+                type="button"
+                className={`nav-link ${
+                  seccionAdmin === "usuarios"
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() => irAdmin("usuarios")}
+              >
+                <i className="fa-solid fa-users"></i>
+                Gestionar usuarios
+              </button>
+
+              <button
+
+                type="button"
+
+                className={`nav-link ${
+                  seccionAdmin ===
+                  "pendientes"
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() =>
+                  irAdmin("pendientes")
+                }
+
+              >
+
+                <i className="fa-solid fa-clock"></i>
+
+                Pedidos pendientes
+
+              </button>
+
+              <button
+
+                type="button"
+
+                className={`nav-link ${
+                  seccionAdmin ===
+                  "completados"
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() =>
+                  irAdmin("completados")
+                }
+
+              >
+
+                <i className="fa-solid fa-circle-check"></i>
+
+                Pedidos completados
+
+              </button>
+
+            </div>
+
+          )}
+
+
+          {/* ==================================
+              MENÚ PÚBLICO
+          ================================== */}
+
+          {!usuarioActual && (
+
+            <div className="nav-links">
+
+
+              {/* INICIO */}
+
+              <button
+
+                type="button"
+
+                className="nav-link"
+
+                onClick={() =>
+                  cambiarPagina("home")
+                }
+
+              >
+
+                <i className="fa-solid fa-house"></i>
+
+                Inicio
+
+              </button>
+
+
+              {/* REPUESTOS */}
+
+              <button
+
+                type="button"
+
+                className="nav-link"
+
+                onClick={() =>
+                  cambiarPagina("home")
+                }
+
+              >
+
+                <i className="fa-solid fa-gears"></i>
+
+                Repuestos
+
+              </button>
+
+
+              {/* CATEGORÍAS */}
+
+              <button
+
+                type="button"
+
+                className="nav-link"
+
+                onClick={() =>
+                  cambiarPagina("home")
+                }
+
+              >
+
+                <i className="fa-solid fa-layer-group"></i>
+
+                Categorías
+
+              </button>
+
+
+              {/* NOSOTROS */}
+
+              <button
+
+                type="button"
+
+                className="nav-link"
+
+                onClick={() =>
+                  cambiarPagina("home")
+                }
+
+              >
+
+                <i className="fa-solid fa-building"></i>
+
                 Nosotros
-              </a>
 
-            )}
+              </button>
 
-          </div>
+            </div>
 
-
-          <span className="ms-auto text-warning fw-bold">
-
-            <i className="fa-solid fa-bolt me-1"></i>
-
-            Ofertas
-
-          </span>
+          )}
 
         </div>
 
@@ -356,5 +710,6 @@ function Header({
     </>
   );
 }
+
 
 export default Header;
