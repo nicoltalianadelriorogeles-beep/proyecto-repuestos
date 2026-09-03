@@ -612,6 +612,16 @@ function Header({
 
               </button>
 
+              <button type="button" className={`nav-link ${seccionAdmin === "pqr" ? "active" : ""}`} onClick={() => irAdmin("pqr")}>
+                <i className="fa-solid fa-headset"></i>
+                PQR y reclamos
+              </button>
+
+              <button type="button" className={`nav-link ${seccionAdmin === "facturas" ? "active" : ""}`} onClick={() => irAdmin("facturas")}>
+                <i className="fa-solid fa-file-invoice"></i>
+                Facturas
+              </button>
+
             </div>
 
           )}

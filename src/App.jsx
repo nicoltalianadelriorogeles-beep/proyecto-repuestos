@@ -269,6 +269,26 @@ function App() {
     }
   };
 
+  const recuperarPassword = (correo) => {
+    const indice = usuarios.findIndex(
+      (usuario) => usuario.correo.toLowerCase() === correo.trim().toLowerCase()
+    );
+
+    if (indice === -1) {
+      return false;
+    }
+
+    const passwordTemporal = `Recupera${Date.now().toString().slice(-4)}`;
+    setUsuarios((actuales) => actuales.map((usuario, posicion) => (
+      posicion === indice
+        ? { ...usuario, password: passwordTemporal }
+        : usuario
+    )));
+
+    alert(`Simulación de correo enviada a ${correo}. Tu contraseña temporal es: ${passwordTemporal}`);
+    return true;
+  };
+
   // CERRAR SESIÓN
   const cerrarSesion = () => {
     setUsuarioActual(null);
@@ -539,6 +559,7 @@ function App() {
           irRegistro={() =>
             setPagina("registro")
           }
+          recuperarPassword={recuperarPassword}
         />
       )}
 
@@ -587,9 +608,6 @@ function App() {
               cambiarEstadoPedido
             }
             seccion={seccionAdmin}
-            cambiarSeccion={
-              cambiarSeccionAdmin
-            }
           />
         )}
 

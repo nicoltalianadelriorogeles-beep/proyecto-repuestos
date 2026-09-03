@@ -26,6 +26,7 @@ function Admin({
 
   const [formulario, setFormulario] = useState(formularioInicial);
   const [editando, setEditando] = useState(null);
+  const [pqr, setPqr] = useState([]);
 
   const manejarCambio = (e) => {
     setFormulario({
@@ -99,6 +100,34 @@ function Admin({
   const pedidosPendientes = pedidos.filter(
     (pedido) => pedido.estado === "PENDIENTE"
   );
+
+  const descargarFactura = (pedido) => {
+    const ventana = window.open("", "_blank");
+    ventana.document.write(`<html><head><title>Factura ${pedido.id}</title><style>body{font-family:Arial;padding:40px;color:#24496b}h1{color:#3478a8}table{width:100%;border-collapse:collapse;margin-top:24px}td,th{padding:12px;border-bottom:1px solid #dbe4ee;text-align:left}.total{font-size:20px;font-weight:bold;text-align:right}</style></head><body><h1>Producciones Angel</h1><p>Factura #${pedido.id}<br>Cliente: ${pedido.cliente}<br>Fecha: ${pedido.fecha}</p><table><tr><th>Producto</th><th>Cantidad</th></tr>${pedido.productos?.map((producto) => `<tr><td>${producto.nombre}</td><td>${producto.cantidad}</td></tr>`).join("")}</table><p class="total">Total: $${Number(pedido.total).toLocaleString("es-CO")}</p></body></html>`);
+    ventana.document.close();
+    ventana.print();
+  };
+
+  const mostrarFacturas = () => (
+    <>
+      <div className="admin-section-title"><span className="admin-label">DOCUMENTOS</span><h2>Facturas</h2><p>Genera una factura imprimible y guárdala como PDF.</p></div>
+      <div className="invoice-grid">
+        {pedidos.length === 0 ? <div className="admin-card admin-empty-state text-center"><i className="fa-solid fa-file-invoice"></i><h5>Aún no hay facturas</h5></div> : pedidos.map((pedido) => (
+          <article className="invoice-card" key={pedido.id}><div><span className="invoice-number">FACTURA #{pedido.id}</span><h3>{pedido.cliente}</h3><p>{pedido.fecha}</p></div><strong>${Number(pedido.total).toLocaleString("es-CO")}</strong><button type="button" className="btn btn-primary" onClick={() => descargarFactura(pedido)}><i className="fa-solid fa-file-pdf me-2"></i>Generar PDF</button></article>
+        ))}
+      </div>
+    </>
+  );
+
+  const mostrarPqr = () => {
+    const enviarPqr = (e) => {
+      e.preventDefault();
+      const datos = new FormData(e.currentTarget);
+      setPqr((actuales) => [...actuales, { id: Date.now(), asunto: datos.get("asunto"), detalle: datos.get("detalle") }]);
+      e.currentTarget.reset();
+    };
+    return <><div className="admin-section-title"><span className="admin-label">ATENCIÓN</span><h2>PQR y reclamos</h2><p>Registra y consulta peticiones, quejas y reclamos.</p></div><div className="pqr-layout"><form className="admin-card pqr-form" onSubmit={enviarPqr}><h5><i className="fa-solid fa-headset me-2"></i>Registrar PQR</h5><label className="form-label">Asunto</label><input name="asunto" className="form-control mb-3" required /><label className="form-label">Detalle</label><textarea name="detalle" className="form-control mb-3" rows="5" required></textarea><button className="btn btn-warning" type="submit"><i className="fa-solid fa-paper-plane me-2"></i>Guardar PQR</button></form><div className="pqr-list">{pqr.length === 0 ? <div className="admin-card admin-empty-state text-center"><i className="fa-solid fa-inbox"></i><h5>No hay PQR registradas</h5></div> : pqr.map((item) => <article className="pqr-card" key={item.id}><span>PQR #{item.id}</span><h5>{item.asunto}</h5><p>{item.detalle}</p><small>Estado: pendiente de atención</small></article>)}</div></div></>;
+  };
 
   const mostrarPedidos = (estado) => {
     const pedidosFiltrados = pedidos.filter(
@@ -497,19 +526,6 @@ function Admin({
             </p>
           </div>
 
-          <div className="admin-account-card">
-            <div className="admin-account-icon">
-              <i className="fa-solid fa-user-shield"></i>
-            </div>
-
-            <div>
-              <small>Sesión iniciada</small>
-
-              <strong>
-                {usuarioActual?.primerNombre}
-              </strong>
-            </div>
-          </div>
         </div>
 
         <div className="admin-summary mb-5">
@@ -542,6 +558,10 @@ function Admin({
 
         {seccion === "usuarios"
           ? mostrarUsuarios()
+          : seccion === "pqr"
+            ? mostrarPqr()
+            : seccion === "facturas"
+              ? mostrarFacturas()
           : seccion === "pendientes"
             ? mostrarPedidos("PENDIENTE")
             : seccion === "completados"

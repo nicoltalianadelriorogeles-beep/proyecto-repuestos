@@ -436,22 +436,19 @@ a {
 
 .btn,
 .btn-header,
-.cart-button,
-.admin-menu button {
+.cart-button {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .btn:hover,
 .btn-header:hover,
-.cart-button:hover,
-.admin-menu button:hover {
+.cart-button:hover {
   transform: translateY(-1px);
 }
 
 .btn:active,
 .btn-header:active,
-.cart-button:active,
-.admin-menu button:active {
+.cart-button:active {
   transform: translateY(0);
 }
 
@@ -486,16 +483,6 @@ a {
   color: white;
 
   display: flex;
-  align-items: center;
-}
-
-.hero-container {
-  width: min(1200px, 92%);
-  margin: auto;
-
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 50px;
   align-items: center;
 }
 
@@ -611,12 +598,6 @@ a {
 /* =====================================================
    PRODUCTOS
 ===================================================== */
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
 
 .product-card {
   background: white;
@@ -902,33 +883,6 @@ a {
   display: block;
   color: var(--azul);
   margin-bottom: 3px;
-}
-
-/* =====================================================
-   ADMIN
-===================================================== */
-
-.admin-menu {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.admin-menu button {
-  border: 0;
-  background: var(--gris-100);
-  color: var(--gris-700);
-
-  padding: 10px 16px;
-
-  border-radius: var(--radio-sm);
-  font-weight: 700;
-}
-
-.admin-menu button:hover,
-.admin-menu button.active {
-  background: var(--azul);
-  color: white;
 }
 
 .admin-summary {
@@ -1492,8 +1446,7 @@ footer ul {
 
 .cliente-hero-card,
 .cliente-category-large,
-.cliente-profile-card,
-.admin-account-card {
+.cliente-profile-card {
   background: #fff;
   border: 1px solid var(--borde);
   border-radius: var(--radio-lg);
@@ -1507,7 +1460,6 @@ footer ul {
 
 .cliente-big-icon,
 .auth-icon,
-.admin-account-icon,
 .modal-home-icon {
   width: 76px;
   height: 76px;
@@ -1606,6 +1558,22 @@ footer ul {
 .auth-page { min-height: calc(100vh - 135px); padding: 32px 0; }
 .auth-card { border-radius: var(--radio-lg) !important; box-shadow: var(--sombra-lg); }
 .auth-icon { background: var(--naranja-claro); color: var(--naranja-oscuro); }
+.auth-recovery-link { display: block; border: 0; padding: 4px 0; background: transparent; color: var(--azul); font-size: 13px; font-weight: 700; }
+.auth-recovery-link:hover { color: var(--naranja-oscuro); }
+
+.invoice-grid, .pqr-list { display: grid; gap: 16px; }
+.invoice-card { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 20px; padding: 20px; border: 1px solid var(--borde); border-radius: var(--radio-md); background: #fff; box-shadow: var(--sombra-sm); }
+.invoice-card h3 { margin: 5px 0; color: var(--azul); font-size: 18px; }
+.invoice-card p { margin: 0; color: var(--gris-500); font-size: 13px; }
+.invoice-card > strong { color: var(--naranja-oscuro); font-size: 18px; white-space: nowrap; }
+.invoice-number { color: var(--naranja-oscuro); font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+.pqr-layout { display: grid; grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr); gap: 20px; }
+.pqr-form { padding: 24px; }
+.pqr-form h5 { margin-bottom: 20px; color: var(--azul); font-weight: 800; }
+.pqr-card { padding: 20px; border: 1px solid var(--borde); border-left: 4px solid var(--naranja); border-radius: var(--radio-md); background: #fff; box-shadow: var(--sombra-sm); }
+.pqr-card > span, .pqr-card small { color: var(--naranja-oscuro); font-size: 11px; font-weight: 800; }
+.pqr-card h5 { margin: 8px 0; color: var(--azul); }
+.pqr-card p { margin: 0 0 10px; color: var(--gris-500); }
 
 .section-modal-backdrop { position: fixed; inset: 0; background: rgba(11, 39, 68, 0.62); z-index: 3000; backdrop-filter: blur(3px); }
 .section-modal-container { position: fixed; inset: 0; z-index: 3001; display: grid; place-items: center; padding: 20px; overflow-y: auto; }
@@ -1644,19 +1612,10 @@ footer ul {
 
 .admin-title { margin: 6px 0; font-size: clamp(2rem, 4vw, 3rem); }
 .admin-description { color: var(--gris-500); margin-bottom: 0; }
-.admin-account-card { display: flex; align-items: center; gap: 12px; padding: 12px 18px; min-width: 190px; }
-.admin-account-icon { width: 42px; height: 42px; margin: 0; border-radius: 12px; background: var(--azul); color: #fff; font-size: 18px; }
-.admin-account-card small, .admin-account-card strong { display: block; }
-.admin-account-card small { color: var(--gris-500); font-size: 11px; }
-.admin-account-card strong { color: var(--azul); }
 .admin-section-title { margin-bottom: 22px; }
 .admin-section-title h2 { margin: 5px 0; color: var(--azul); font-weight: 800; }
 .admin-section-title p { margin: 0; color: var(--gris-500); }
 .user-crud-section { margin-top: 0; }
-.admin-menu { flex-wrap: wrap; justify-content: center; padding: 8px; border: 1px solid var(--borde); border-radius: 14px; background: #fff; box-shadow: var(--sombra-sm); }
-.admin-menu button { position: relative; display: inline-flex; align-items: center; border: 0; background: transparent; color: var(--gris-700); transition: var(--transicion); }
-.admin-menu button.active { background: var(--azul); box-shadow: 0 4px 12px rgba(18, 59, 102, 0.2); }
-.admin-menu-count { display: inline-flex; align-items: center; justify-content: center; min-width: 21px; height: 21px; margin-left: 8px; padding: 0 5px; border-radius: 20px; background: var(--naranja); color: #fff; font-size: 11px; }
 .admin-card { overflow: hidden; }
 .admin-card-header { display: flex; align-items: center; min-height: 62px; background: var(--azul-claro); border-bottom: 1px solid var(--borde); color: var(--azul); }
 .admin-header-icon { display: grid; place-items: center; width: 38px; height: 38px; margin-right: 12px; border-radius: 10px; background: var(--naranja); color: #fff; }
@@ -1670,8 +1629,8 @@ footer ul {
 @media (max-width: 800px) {
   .admin-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-header { align-items: stretch; flex-direction: column; }
-  .admin-account-card { width: 100%; }
   .about-layout { grid-template-columns: 1fr; gap: 28px; }
+  .invoice-card, .pqr-layout { grid-template-columns: 1fr; }
 }
 
 /* =====================================================
@@ -1698,21 +1657,12 @@ footer ul {
     min-width: max-content;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .admin-summary {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 800px) {
-  .hero-container {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
   .hero p {
     margin-left: auto;
     margin-right: auto;
@@ -1725,10 +1675,6 @@ footer ul {
   .categories-grid,
   .benefits-grid {
     grid-template-columns: 1fr;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .profile-data {
@@ -1759,10 +1705,6 @@ footer ul {
     justify-content: center;
   }
 
-  .user-name {
-    font-size: 14px;
-  }
-
   .nav-links {
     width: 100%;
     justify-content: center;
@@ -1777,10 +1719,6 @@ footer ul {
     display: none;
   }
 
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-
   .form-row,
   .admin-form {
     grid-template-columns: 1fr;
@@ -1792,14 +1730,6 @@ footer ul {
 
   .admin-summary {
     grid-template-columns: 1fr;
-  }
-
-  .admin-menu {
-    flex-direction: column;
-  }
-
-  .admin-menu button {
-    width: 100%;
   }
 
   .auth-card {
