@@ -4,8 +4,7 @@ function InfoModal({
   cerrar,
   tipo,
   usuarioActual,
-  productos,
-  cambiarPagina
+  productos
 }) {
 
 

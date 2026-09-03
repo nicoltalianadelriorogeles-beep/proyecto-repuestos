@@ -9,6 +9,17 @@ function ProductCard({
   agregarAlCarrito,
   verProducto
 }) {
+  const reseñas = {
+    "Bomba de desagüe": "Instalación sencilla y buen rendimiento.",
+    "Correa de transmisión": "Material resistente, llegó rápidamente.",
+    "Motor para lavadora": "Buena potencia y compatibilidad.",
+    "Electroválvula": "Funciona correctamente y es fácil de instalar.",
+    "Filtro HEPA": "Mejoró notablemente la filtración.",
+    "Manguera flexible": "Flexible, firme y de buena calidad.",
+    "Cepillo universal": "Práctico para la limpieza diaria.",
+    "Motor para aspiradora": "Excelente reemplazo para el motor original."
+  };
+
   return (
     <div className="col-md-6 col-lg-3">
 
@@ -54,6 +65,17 @@ function ProductCard({
           <p className="text-secondary small flex-grow-1">
             {descripcion}
           </p>
+
+          <div className="product-review">
+            <div className="product-stars" aria-label="5 de 5 estrellas">
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+            </div>
+            <small>{reseñas[nombre] || "Producto recomendado por nuestros clientes."}</small>
+          </div>
 
           {/* PRECIO Y CARRITO */}
           <div className="d-flex justify-content-between align-items-center mt-3">

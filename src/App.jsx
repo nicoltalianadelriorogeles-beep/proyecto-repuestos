@@ -53,6 +53,7 @@ function App() {
 
   // NAVEGACIÓN
   const [pagina, setPagina] = useState("home");
+  const [seccionHome, setSeccionHome] = useState("inicio");
   const [seccionCliente, setSeccionCliente] = useState("inicio");
   const [seccionAdmin, setSeccionAdmin] = useState("productos");
 
@@ -503,6 +504,10 @@ function App() {
         }}
         usuarioActual={usuarioActual}
         cambiarPagina={setPagina}
+        cambiarSeccionHome={(seccion) => {
+          setSeccionHome(seccion);
+          setPagina("home");
+        }}
         cambiarSeccionCliente={
           cambiarSeccionCliente
         }
@@ -519,6 +524,10 @@ function App() {
         <Home
           busqueda={busqueda}
           productos={productos}
+          verProducto={() => abrirModal("repuestos")}
+          agregarAlCarrito={agregarAlCarrito}
+          seccion={seccionHome}
+          cambiarSeccion={setSeccionHome}
         />
       )}
 

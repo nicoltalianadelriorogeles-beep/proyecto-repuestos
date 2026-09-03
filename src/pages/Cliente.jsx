@@ -748,6 +748,12 @@ function Cliente({
 
     case "inicio":
 
+      return (
+        <main className="cliente-page">
+          {vistaInicio()}
+        </main>
+      );
+
     default:
 
       return (

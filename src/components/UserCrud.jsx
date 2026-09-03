@@ -281,28 +281,7 @@ function UserCrud({
 
 
   return (
-    <section className="mt-5">
-
-
-      <div className="admin-section-title">
-
-        <span className="admin-label">
-          USUARIOS
-        </span>
-
-
-        <h2>
-          Gestión de usuarios
-        </h2>
-
-
-        <p>
-          Administra clientes y administradores.
-        </p>
-
-      </div>
-
-
+    <section className="user-crud-section">
       {/* FORMULARIO */}
 
       <div className="card admin-card mb-4">

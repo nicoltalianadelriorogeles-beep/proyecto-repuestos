@@ -6,6 +6,7 @@ function Header({
   abrirCarrito,
   usuarioActual,
   cambiarPagina,
+  cambiarSeccionHome,
   cambiarSeccionCliente,
   cambiarSeccionAdmin,
   seccionCliente,
@@ -32,6 +33,10 @@ function Header({
 
     cambiarSeccionAdmin(seccion);
 
+  };
+
+  const irPublico = (seccion) => {
+    cambiarSeccionHome(seccion);
   };
 
 
@@ -148,7 +153,12 @@ function Header({
               value={busqueda}
 
               onChange={(e) =>
-                setBusqueda(e.target.value)
+                (() => {
+                  setBusqueda(e.target.value);
+                  if (!usuarioActual) {
+                    cambiarSeccionHome("productos");
+                  }
+                })()
               }
 
             />
@@ -229,7 +239,7 @@ function Header({
 
                   type="button"
 
-                  className="user-name"
+                  className="btn-header profile-button"
 
                   onClick={() => {
 
@@ -624,9 +634,7 @@ function Header({
 
                 className="nav-link"
 
-                onClick={() =>
-                  cambiarPagina("home")
-                }
+                onClick={() => irPublico("inicio")}
 
               >
 
@@ -645,9 +653,7 @@ function Header({
 
                 className="nav-link"
 
-                onClick={() =>
-                  cambiarPagina("home")
-                }
+                onClick={() => irPublico("productos")}
 
               >
 
@@ -666,9 +672,7 @@ function Header({
 
                 className="nav-link"
 
-                onClick={() =>
-                  cambiarPagina("home")
-                }
+                onClick={() => irPublico("categorias")}
 
               >
 
@@ -687,9 +691,7 @@ function Header({
 
                 className="nav-link"
 
-                onClick={() =>
-                  cambiarPagina("home")
-                }
+                onClick={() => irPublico("nosotros")}
 
               >
 

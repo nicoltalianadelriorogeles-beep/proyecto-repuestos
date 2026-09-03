@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 import CategoryCard from "../components/CategoryCard";
 
@@ -5,8 +6,11 @@ function Home({
   busqueda,
   productos,
   verProducto,
-  agregarAlCarrito
+  agregarAlCarrito,
+  seccion = "inicio",
+  cambiarSeccion
 }) {
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
 
   const categorias = [
     {
@@ -39,17 +43,21 @@ function Home({
       ${producto.descripcion}
     `.toLowerCase();
 
-    return texto.includes(textoBusqueda);
+    const coincideCategoria = categoriaSeleccionada && !textoBusqueda
+      ? producto.categoria === categoriaSeleccionada
+      : true;
+
+    return texto.includes(textoBusqueda) && coincideCategoria;
   });
 
   return (
-    <>
+    <main className={`home-view home-view-${seccion}`}>
 
       {/* =================================
           HERO
       ================================= */}
 
-      <section className="hero">
+      <section id="inicio" className="hero">
 
         <div className="container">
 
@@ -78,6 +86,10 @@ function Home({
                 <a
                   href="#productos"
                   className="btn btn-warning fw-bold"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    cambiarSeccion("productos");
+                  }}
                 >
                   <i className="fa-solid fa-box-open me-2"></i>
                   Ver repuestos
@@ -86,6 +98,10 @@ function Home({
                 <a
                   href="#categorias"
                   className="btn btn-outline-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    cambiarSeccion("categorias");
+                  }}
                 >
                   Categorías
                 </a>
@@ -147,6 +163,10 @@ function Home({
                 icon={categoria.icon}
                 nombre={categoria.nombre}
                 descripcion={categoria.descripcion}
+                onClick={() => {
+                  setCategoriaSeleccionada(categoria.nombre);
+                  cambiarSeccion("productos");
+                }}
               />
 
             ))}
@@ -177,9 +197,11 @@ function Home({
                 CATÁLOGO
               </span>
 
-              <h2 className="fw-bold text-primary mt-2 mb-0">
+                  <h2 className="fw-bold text-primary mt-2 mb-0">
 
-                {textoBusqueda
+                {categoriaSeleccionada
+                  ? `Repuestos para ${categoriaSeleccionada}`
+                  : textoBusqueda
                   ? `Resultados para "${busqueda}"`
                   : "Repuestos destacados"}
 
@@ -251,7 +273,7 @@ function Home({
           BENEFICIOS
       ================================= */}
 
-      <section className="py-5 bg-primary text-white">
+      <section className="benefits-section py-5 bg-primary text-white">
 
         <div className="container">
 
@@ -341,22 +363,44 @@ function Home({
         className="py-5"
       >
 
-        <div className="container text-center">
+        <div className="container">
+          <div className="about-layout">
+            <div className="about-intro">
+              <span className="cliente-label">SOBRE NOSOTROS</span>
+              <h2 className="fw-bold text-primary mt-2">
+                Repuestos que mantienen tu hogar en marcha
+              </h2>
+              <p className="about-text">
+                En Producciones Angel conectamos experiencia técnica,
+                repuestos confiables y atención cercana para que reparar
+                tus electrodomésticos sea una decisión sencilla.
+              </p>
+              <div className="about-highlight">
+                <i className="fa-solid fa-circle-check"></i>
+                <span>Asesoría para elegir la referencia adecuada</span>
+              </div>
+            </div>
 
-          <span className="cliente-label">
-            SOBRE NOSOTROS
-          </span>
-
-          <h2 className="fw-bold text-primary mt-2">
-            Producciones Angel
-          </h2>
-
-          <p className="about-text mx-auto">
-            Somos una tienda especializada en
-            repuestos para lavadoras y aspiradoras,
-            ofreciendo soluciones para el
-            mantenimiento de electrodomésticos.
-          </p>
+            <div className="about-grid">
+              <article className="about-card">
+                <div className="about-card-icon"><i className="fa-solid fa-bullseye"></i></div>
+                <h3>Soluciones precisas</h3>
+                <p>Catálogo enfocado en lavadoras y aspiradoras de uso doméstico.</p>
+              </article>
+              <article className="about-card">
+                <div className="about-card-icon orange"><i className="fa-solid fa-handshake"></i></div>
+                <h3>Atención cercana</h3>
+                <p>Te acompañamos antes y después de tu compra.</p>
+              </article>
+              <article className="about-card about-card-wide">
+                <div className="about-card-icon"><i className="fa-solid fa-location-dot"></i></div>
+                <div>
+                  <h3>Estamos para ayudarte</h3>
+                  <p>Envíos a todo Colombia y soporte personalizado para encontrar lo que necesitas.</p>
+                </div>
+              </article>
+            </div>
+          </div>
 
         </div>
 
@@ -423,7 +467,7 @@ function Home({
 
       </footer>
 
-    </>
+    </main>
   );
 }
 

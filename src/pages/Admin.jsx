@@ -13,8 +13,7 @@ function Admin({
   eliminarUsuario,
   pedidos = [],
   cambiarEstadoPedido,
-  seccion = "productos",
-  cambiarSeccion
+  seccion = "productos"
 }) {
   const formularioInicial = {
     nombre: "",
