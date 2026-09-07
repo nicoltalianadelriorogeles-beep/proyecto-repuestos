@@ -10,7 +10,6 @@ function CategoryCard({
       <div
         className="card category-card h-100"
         onClick={onClick}
-        style={{ cursor: "pointer" }}
       >
 
         <div className="card-body d-flex align-items-center p-4">

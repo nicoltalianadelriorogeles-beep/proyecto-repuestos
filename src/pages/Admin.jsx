@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UserCrud from "../components/UserCrud";
+import { crearFacturaHtml } from "../utils/factura";
 
 function Admin({
   productos,
@@ -103,7 +104,7 @@ function Admin({
 
   const descargarFactura = (pedido) => {
     const ventana = window.open("", "_blank");
-    ventana.document.write(`<html><head><title>Factura ${pedido.id}</title><style>body{font-family:Arial;padding:40px;color:#24496b}h1{color:#3478a8}table{width:100%;border-collapse:collapse;margin-top:24px}td,th{padding:12px;border-bottom:1px solid #dbe4ee;text-align:left}.total{font-size:20px;font-weight:bold;text-align:right}</style></head><body><h1>Producciones Angel</h1><p>Factura #${pedido.id}<br>Cliente: ${pedido.cliente}<br>Fecha: ${pedido.fecha}</p><table><tr><th>Producto</th><th>Cantidad</th></tr>${pedido.productos?.map((producto) => `<tr><td>${producto.nombre}</td><td>${producto.cantidad}</td></tr>`).join("")}</table><p class="total">Total: $${Number(pedido.total).toLocaleString("es-CO")}</p></body></html>`);
+    ventana.document.write(crearFacturaHtml(pedido));
     ventana.document.close();
     ventana.print();
   };
