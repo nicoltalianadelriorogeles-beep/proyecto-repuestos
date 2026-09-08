@@ -1,29 +1,9 @@
 function Registro({
   formulario,
-  setFormulario,
-  registrarUsuario,
+  manejarCambio,
+  manejarSubmit,
   irLogin
 }) {
-
-  const manejarCambio = (e) => {
-
-    setFormulario({
-      ...formulario,
-      [e.target.name]: e.target.value
-    });
-
-  };
-
-
-  const manejarSubmit = (e) => {
-
-    e.preventDefault();
-
-    registrarUsuario();
-
-  };
-
-
   return (
    <main className="auth-page">
 

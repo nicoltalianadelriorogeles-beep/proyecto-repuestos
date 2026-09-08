@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter,
   Routes,
@@ -7,90 +6,62 @@ import {
 
 import "./App.css";
 
-// Layout
-import AdminLayout from "./Admin/layout/AdminLayout";
-
-// Páginas del administrador
-import AdminDashboard from "./Admin/pages/AdminDashboard";
+// =====================================
+// ADMINISTRADOR
+// =====================================
 import Productos from "./Admin/pages/ModuloProductos";
 import Usuarios from "./Admin/pages/ModuloUsuarios";
+import AdminDashboard from "./Admin/pages/AdminDashboard";
 import PedidosPendientes from "./Admin/pages/ModuloPedidosPendientes";
 import PedidosCompletados from "./Admin/pages/ModuloPedidosCompletados";
-import Pqr from "./Admin/pages/ModuloPqr";
-import Facturas from "./Admin/pages/ModuloFacturas";
+import ModuloPqr from "./Admin/pages/ModuloPqr";
+import ModuloFacturas from "./Admin/pages/ModuloFacturas";
+import AdminLayout from "./Admin/layout/AdminLayout";
+
+// =====================================
+// CLIENTE
+// =====================================
+import ClienteDashboard from "./Clientes/pages/ClienteDashboard";
+import ModuloCatalogo from "./Clientes/pages/ModuloCatalogo";
+import ModuloCategorias from "./Clientes/pages/ModuloCategorias";
+import ModuloPerfil from "./Clientes/pages/ModuloPerfil";
+import ModuloCarrito from "./Clientes/pages/ModuloCarrito";
+import ClienteLayout from "./Clientes/layout/ClienteLayout";
+
 
 function App() {
+
   return (
     <BrowserRouter>
 
       <Routes>
 
         {/* =====================================
-            PANEL PRINCIPAL DEL ADMINISTRADOR
-            ===================================== */}
-        <Route
-          path="/admin"
-          element={
-            <AdminLayout />
-          }
-        >
+            ADMINISTRADOR
+        ===================================== */}
 
-          {/* Dashboard */}
-          <Route
-            index
-            element={
-              <AdminDashboard />
-            }
-          />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="productos" element={<Productos />} />
+          <Route path="usuarios" element={<Usuarios />} />
+          <Route path="pendientes" element={<PedidosPendientes />} />
+          <Route path="completados" element={<PedidosCompletados />} />
+          <Route path="pqr" element={<ModuloPqr />} />
+          <Route path="facturas" element={<ModuloFacturas />} />
+        </Route>
 
-          {/* Gestión de productos */}
-          <Route
-            path="productos"
-            element={
-              <Productos />
-            }
-          />
 
-          {/* Gestión de usuarios */}
-          <Route
-            path="usuarios"
-            element={
-              <Usuarios />
-            }
-          />
+        {/* =====================================
+            CLIENTE
+        ===================================== */}
 
-          {/* Pedidos pendientes */}
-          <Route
-            path="pendientes"
-            element={
-              <PedidosPendientes />
-            }
-          />
-
-          {/* Pedidos completados */}
-          <Route
-            path="completados"
-            element={
-              <PedidosCompletados />
-            }
-          />
-
-          {/* PQR y reclamos */}
-          <Route
-            path="pqr"
-            element={
-              <Pqr />
-            }
-          />
-
-          {/* Facturas */}
-          <Route
-            path="facturas"
-            element={
-              <Facturas />
-            }
-          />
-
+        <Route path="/cliente" element={<ClienteLayout />}>
+          <Route index element={<ClienteDashboard />} />
+          <Route path="inicio" element={<ClienteDashboard />} />
+          <Route path="catalogo" element={<ModuloCatalogo />} />
+          <Route path="categorias" element={<ModuloCategorias />} />
+          <Route path="perfil" element={<ModuloPerfil />} />
+          <Route path="carrito" element={<ModuloCarrito />} />
         </Route>
 
       </Routes>
@@ -98,5 +69,6 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App;
